@@ -9,12 +9,20 @@
 <body>
     <h1> <%= grindMSG %></h1>
   
-    
-    <% workout.forEach(function(item){ %>
-        <h2> <%= item.name %></h2>
-        <h2> <%= item.sets %></h2>
-        <h2> <%= item.reps %></h2>
+    <table>
+        <tr>
+            <thead>Workout Name</thead>   
+            <thead>Sets</thead>
+            <thead>Reps</thead>
+        </tr>
+    <% workout.forEach(function(item){ %>  
+        <tr>
+            <td><%= item.name %></td>
+            <td><%= item.sets %></td>
+            <td><%= item.reps %></td>
+        </tr>        
    <% }) %>
+</table>
                 
           
     <form action="/" method="post">
