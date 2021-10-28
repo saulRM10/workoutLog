@@ -11,9 +11,9 @@
   
     <table>
         <tr>
-            <thead>Workout Name</thead>   
-            <thead>Sets</thead>
-            <thead>Reps</thead>
+            <th>Workout Name</th>   
+            <th>Sets</th>
+            <th>Reps</th>
         </tr>
     <% workout.forEach(function(item){ %>  
         <tr>
@@ -29,22 +29,14 @@
     
         <input type="text " name="newExr" placeholder="New Exercise" autocomplete="off"> 
 
-        <!-- <button type="submit" name="button">+</button> -->
-
         <input type="text " name="setNum" placeholder="set #" autocomplete="off"> 
 
-        <input type="text " name="repsNum" placeholder="set #" autocomplete="off"> 
+        <input type="text " name="repsNum" placeholder="rep #" autocomplete="off"> 
 
         <button type="submit" name="button">+</button>
 
     
     </form>
 
-    <!-- <form action="/" method="post">
-    
-        <input type="text " name="setNum" placeholder="set #" autocomplete="off"> 
-
-        <button type="submit" name="button">++</button>
-    </form> -->
 </body>
 </html>

@@ -70,7 +70,7 @@ const item1 = new Item({
 
 app.get("/", function(require, response){
 
-    let msg = "if there is a will, there is a way";
+    let msg = "workout log";
 
     Item.find({}, function(err, foundItems){
 
