@@ -37,7 +37,8 @@ mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true ,
 const itemsSchema = {
     name: String,
     sets: String,
-    reps: String
+    reps: String,
+    weight: String
   };
   // 5) cerate a mongoose model based on the schema 
 const Item = mongoose.model("Item", itemsSchema);
@@ -48,19 +49,22 @@ const Item = mongoose.model("Item", itemsSchema);
 const item1 = new Item({
     name: "bench",
     sets: "4",
-    reps:"8"
+    reps:"8",
+    weight: "225"
   });
   
   const item2 = new Item({
     name: "squat",
     sets: "3",
-    reps:"12"
+    reps:"12",
+    weight: "315"
   });
   
   const item3 = new Item({
     name: "overhead press ",
     sets: "3",
-    reps:"8"
+    reps:"8",
+    weight: "135"
 
   });
 
@@ -106,9 +110,11 @@ app.post("/", function(require, response){
 
     let NumReps = require.body.repsNum;
 
+    let wght = require.body.weight;
+
     // listofExr.push(exrName);
 
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps };
+   let myobj = { name: exrName, sets: NumSet, reps: NumReps , wght: weight};
     
     Item.insertMany(myobj, function(err, response) {
         if (err) {
