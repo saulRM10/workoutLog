@@ -114,7 +114,7 @@ app.post("/", function(require, response){
 
     // listofExr.push(exrName);
 
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps , wght: weight};
+   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: wght};
     
     Item.insertMany(myobj, function(err, response) {
         if (err) {
