@@ -93,6 +93,7 @@ app.get("/", function(require, response){
         
         else{
             response.render('index', { grindMSG: msg , workout: foundItems });
+
         }
 
     })
@@ -125,8 +126,10 @@ app.post("/", function(require, response){
         }
     });
     response.redirect("/");
+    
 
 });
+
 
 /// used to delete items of the list
 app.post("/delete", function(require, response ){

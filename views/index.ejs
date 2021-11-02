@@ -7,6 +7,16 @@
     <title>workout log create</title>
 </head>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+<style>
+    table, th, td{
+        border: 1px solid black;
+
+    }
+    table{
+        width: 50%;
+    }
+</style>
+
 <body>
     <h1> <%= grindMSG %></h1>
   
@@ -18,17 +28,55 @@
             <th>Weight</th>
         </tr>
         <% workout.forEach(function(item){ %>  
-            <tr>
+            <!-- <tr>
+       
                 <form action="/delete" method="post">
               
                 <td><%= item.name %></td>
                 <td><%= item.sets %></td>
                 <td><%= item.reps %></td>
                 <td><%= item.weight %></td>
-               <td><button type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
+               <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
               </form>
-            </tr>        
+       
+            </tr>     -->
+
+            <!-- Below this is testing -->
+            <% for(var i = 0; i< item.sets; i++){ %>  
+                <tr>
+       
+                    <form action="/delete" method="post">
+                       <% if( i ==0 ){ %>
+                        <td><%= item.name %></td>
+                        
+                        <% } %>
+                        <% if( i !=0 ){ %>
+                            <td></td>
+                            <% } %>
+                    <!-- <td><%= item.name %></td> -->
+                    <td> Set <%= i+1 %>: </td>
+                    <td><%= item.reps %></td>
+                    <td><%= item.weight %></td>
+                    <% if( i ==0 ){ %>
+                        <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
+                        <% } %>
+                    <% if( i !=0 ){ %>
+                        <td> </td> 
+                        <% } %>
+                   
+                  </form>
+                  
+                </tr>  
+                <%}%>  
+    
+            
+            
+            <!-- above  this is testing -->
+            
+
+
        <% }) %>
+       
 </table>
                 
           
