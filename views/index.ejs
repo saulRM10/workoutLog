@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>workout log create</title>
 </head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 <body>
     <h1> <%= grindMSG %></h1>
   
@@ -25,7 +26,7 @@
             <td><%= item.reps %></td>
             <td><%= item.weight %></td>
 
-           <td><button type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
+           <td><button type="submit" name = "skip" value="<%= item._id %>" class="fa fa-trash-o" ></button> </td> 
           </form>
         </tr>        
    <% }) %>
