@@ -18,10 +18,15 @@
         </tr>
     <% workout.forEach(function(item){ %>  
         <tr>
+            <form action="/delete" method="post">
+          
             <td><%= item.name %></td>
             <td><%= item.sets %></td>
             <td><%= item.reps %></td>
             <td><%= item.weight %></td>
+
+           <td><button type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
+          </form>
         </tr>        
    <% }) %>
 </table>

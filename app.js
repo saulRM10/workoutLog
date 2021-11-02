@@ -127,6 +127,13 @@ app.post("/", function(require, response){
     response.redirect("/");
 
 });
+
+/// used to delete items of the list
+app.post("/delete", function(require, response ){
+
+    const remove = require.body.skip;
+
+});
 app.listen(5000,function(){
     console.log("connected to port 5000");
 });
