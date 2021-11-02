@@ -131,8 +131,15 @@ app.post("/", function(require, response){
 /// used to delete items of the list
 app.post("/delete", function(require, response ){
 
-    const remove = require.body.skip;
+    const noMore = require.body.skip;
 
+    Item.remove({_id: noMore}, function(err){
+        if( !err){
+            console.log("item has been deleted successfully");
+        }
+        // deleted the item, not go back to root and render what we do have left
+        response.redirect("/");
+    });    
 });
 app.listen(5000,function(){
     console.log("connected to port 5000");
