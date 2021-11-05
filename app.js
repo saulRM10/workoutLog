@@ -8,6 +8,7 @@ const bodyParcer = require("body-parser");
 const { setServers } = require("dns");
 
 const mongoose = require("mongoose");
+const { redirect } = require("statuses");
 
 const app = express();
 
@@ -70,7 +71,7 @@ const item1 = new Item({
 
   const defaultItems = [ item1, item2, item3];
 
-
+  let openMenue = 0;
 
 app.get("/", function(require, response){
 
@@ -92,7 +93,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { grindMSG: msg , workout: foundItems });
+            response.render('index', { grindMSG: msg , workout: foundItems, open: openMenue });
 
         }
 
@@ -113,9 +114,8 @@ app.post("/", function(require, response){
 
     let wght = require.body.weight;
 
-    // listofExr.push(exrName);
 
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: wght};
+   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: wght };
     
     Item.insertMany(myobj, function(err, response) {
         if (err) {
@@ -136,7 +136,9 @@ app.post("/delete", function(require, response ){
 
     const noMore = require.body.skip;
 
-    Item.remove({_id: noMore}, function(err){
+    openMenue = require.body.editBtn;
+
+    Item.deleteOne({_id: noMore}, function(err){
         if( !err){
             console.log("item has been deleted successfully");
         }
@@ -144,6 +146,32 @@ app.post("/delete", function(require, response ){
         response.redirect("/");
     });    
 });
+
+// create a route to update item 
+app.post("/update", function(require,response){
+
+    // store 'weight:' of the item we want to update 
+    const updateItem = require.body.needsUpdate;
+    
+
+      var myquery = {  _id: updateItem };
+      var newValues = { $set: {weight: "780" } };
+      //let userInput = response.body.newItemData; 
+
+       Item.updateOne(myquery, newValues, function(err, response) {
+        if( !err){
+
+            console.log("item has been updated successfully for item:" + updateItem );
+            
+        }
+        
+       
+        
+      });
+      // updated the item, not go back to root and render what we do have left
+    response.redirect("/");
+});
+
 app.listen(5000,function(){
     console.log("connected to port 5000");
 });
