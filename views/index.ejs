@@ -8,11 +8,11 @@
 </head>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 <style>
-    table, th, td{
+    /* table, th, td{
         border: 1px solid black;
         text-align: center;
 
-    }
+    } */
     table{
         width: 50%;
     }
@@ -62,14 +62,28 @@
                     <% if( i ==0 ){ %>
                         <!-- <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
                         <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td>  -->
-                        <td><button formaction="/test" type="submit" name = "testBtn" value="<%= item.name%>"> ? </button></td>
+                        <td><button formaction="/test" type="submit" name = "testBtn" value="<%= item.name%>"> edit </button></td>
                         <% } %>
                     <!-- <% if( i !=0 ){ %>
                         <td></td> 
                         <% } %> -->
                         <% if(  tValue == item.name ){ %>
-                            <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
-                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td> 
+                            <% if( i ==1 ){ %>
+                                <form action="/update" method="post">
+                                
+                                    <!-- <td><input type="text" name="updateName" value='<%=item.name%>'></td>
+                                    <td><input type="text" name="updateSetNum"  value='<%=item.sets%>'></td>
+                                    <td><input type="text" name="updateRepNum"  value='<%=item.reps%>'></td>
+                                    <td><input type="text" name="updateWeight" value='<%=item.weight%>'></td> -->
+                                    <td><input type="text" name="updateName" ></td>
+                                    <td><input type="text" name="updateSetNum" ></td>
+                                    <td><input type="text" name="updateRepNum"  ></td>
+                                    <td><input type="text" name="updateWeight" ></td>
+                          
+                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> - </button> </td> 
+                            <td><button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
+                                </form>
+                            <% } %>
                             <% } %> 
 
                   </form>

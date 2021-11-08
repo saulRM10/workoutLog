@@ -154,9 +154,13 @@ app.post("/update", function(require,response){
     // store 'weight:' of the item we want to update 
     const updateItem = require.body.needsUpdate;
     
+    let newName = require.body.updateName;
+    let newSetNum = require.body.updateSetNum;
+    let newRepNum = require.body.updateRepNum;
+    let newWeight= require.body.updateWeight;
 
       var myquery = {  _id: updateItem };
-      var newValues = { $set: {weight: "780" } };
+      var newValues = { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: newWeight  } };
       //let userInput = response.body.newItemData; 
 
        Item.updateOne(myquery, newValues, function(err, response) {
@@ -191,3 +195,4 @@ app.post("/test", function(require, response){
 app.listen(5000,function(){
     console.log("connected to port 5000");
 });
+ 
