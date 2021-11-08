@@ -72,6 +72,7 @@ const item1 = new Item({
   const defaultItems = [ item1, item2, item3];
 
   let openMenue = 0;
+  let testValue; 
 
 app.get("/", function(require, response){
 
@@ -93,7 +94,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { grindMSG: msg , workout: foundItems, open: openMenue });
+            response.render('index', { grindMSG: msg , workout: foundItems, tValue: testValue });
 
         }
 
@@ -172,6 +173,21 @@ app.post("/update", function(require,response){
     response.redirect("/");
 });
 
+
+// need to test out an idea
+app.post("/test", function(require, response){
+
+   testValue = require.body.testBtn;
+
+  // testValue = Item.name; 
+ 
+  console.log("this is the name of the item clicked on: " + testValue);
+
+ 
+    response.redirect("/");
+
+
+});
 app.listen(5000,function(){
     console.log("connected to port 5000");
 });

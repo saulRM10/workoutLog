@@ -60,13 +60,18 @@
                     <td><%= item.reps %></td>
                     <td><%= item.weight %></td>
                     <% if( i ==0 ){ %>
-                        <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
-                        <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td> 
+                        <!-- <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
+                        <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td>  -->
+                        <td><button formaction="/test" type="submit" name = "testBtn" value="<%= item.name%>"> ? </button></td>
                         <% } %>
-                    <% if( i !=0 ){ %>
-                        <td> </td> 
-                        <% } %>
-                   
+                    <!-- <% if( i !=0 ){ %>
+                        <td></td> 
+                        <% } %> -->
+                        <% if(  tValue == item.name ){ %>
+                            <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
+                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td> 
+                            <% } %> 
+
                   </form>
                   
                 </tr>  
@@ -90,13 +95,6 @@
     </form>
 
 
-
 </body>
-<script>
-function showDiv() {
-   document.getElementById('welcomeDiv').style.display = "block";
-  
-};
 
-</script>
 </html>
