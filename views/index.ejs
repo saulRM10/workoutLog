@@ -8,13 +8,18 @@
 </head>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 <style>
-    /* table, th, td{
-        border: 1px solid black;
+    table, th, td{
+        /* border: 1px solid black; */
         text-align: center;
-
-    } */
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
     table{
         width: 50%;
+    }
+    
+    input{
+        width: 100px;
     }
 </style>
 
@@ -31,19 +36,7 @@
             <th>Weight</th>
         </tr>
         <% workout.forEach(function(item){ %>  
-            <!-- <tr>
-       
-                <form action="/delete" method="post">
-              
-                <td><%= item.name %></td>
-                <td><%= item.sets %></td>
-                <td><%= item.reps %></td>
-                <td><%= item.weight %></td>
-               <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
-              </form>
-       
-            </tr>     -->
-            <!-- Below this is testing -->
+           
             <% for(var i = 0; i< item.sets; i++){ %>  
                 <tr>
        
@@ -60,28 +53,32 @@
                     <td><%= item.reps %></td>
                     <td><%= item.weight %></td>
                     <% if( i ==0 ){ %>
-                        <!-- <td><button type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
-                        <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> -- </button> </td>  -->
-                        <td><button formaction="/test" type="submit" name = "testBtn" value="<%= item.name%>"> edit </button></td>
+                      
+                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td>
+
                         <% } %>
-                    <!-- <% if( i !=0 ){ %>
-                        <td></td> 
-                        <% } %> -->
-                        <% if(  tValue == item.name ){ %>
+                    
+                        <% if(  OpenEditId == item.name ){ %>
                             <% if( i ==1 ){ %>
                                 <form action="/update" method="post">
-                                
-                                    <!-- <td><input type="text" name="updateName" value='<%=item.name%>'></td>
-                                    <td><input type="text" name="updateSetNum"  value='<%=item.sets%>'></td>
-                                    <td><input type="text" name="updateRepNum"  value='<%=item.reps%>'></td>
-                                    <td><input type="text" name="updateWeight" value='<%=item.weight%>'></td> -->
-                                    <td><input type="text" name="updateName" ></td>
-                                    <td><input type="text" name="updateSetNum" ></td>
-                                    <td><input type="text" name="updateRepNum"  ></td>
-                                    <td><input type="text" name="updateWeight" ></td>
+        
+                                    <!-- <td><input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off"></td>
+                                    <td><input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off"></td>
+                                    <td><input type="text" name="updateRepNum"  placeholder="<%= item.reps %>"autocomplete="off"></td>
+                                    <td><input type="text" name="updateWeight" placeholder="<%= item.weight %>" autocomplete="off"></td>
                           
-                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> - </button> </td> 
-                            <td><button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> x </button> </td> 
+                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> </td> 
+                            <td><button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
+                            <td><button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </td>  -->
+                                <h3> Edit : <%= item.name %> </h3> <br>
+                                    <input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off">
+                                    <input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off">
+                                    <input type="text" name="updateRepNum"  placeholder="<%= item.reps %>"autocomplete="off">
+                                    <input type="text" name="updateWeight" placeholder="<%= item.weight %>" autocomplete="off">
+                          
+                            <button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
+                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> 
+                            <button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </input> 
                                 </form>
                             <% } %>
                             <% } %> 
@@ -89,10 +86,12 @@
                   </form>
                   
                 </tr>  
+        
                 <%}%>
-
+          
                 <%})%>
 
+        </table>
 
     <form action="/" method="post">
     
@@ -103,7 +102,7 @@
         <input type="text " name="repsNum" placeholder="rep #" autocomplete="off"> 
 
         <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
-        <button type="submit" name="button">+</button>
+        <button  type="submit" name="button">submit</button>
 
     
     </form>

@@ -72,7 +72,7 @@ const item1 = new Item({
   const defaultItems = [ item1, item2, item3];
 
   let openMenue = 0;
-  let testValue; 
+  let openValueId; 
 
 app.get("/", function(require, response){
 
@@ -94,7 +94,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { grindMSG: msg , workout: foundItems, tValue: testValue });
+            response.render('index', { grindMSG: msg , workout: foundItems, OpenEditId: openValueId });
 
         }
 
@@ -137,7 +137,6 @@ app.post("/delete", function(require, response ){
 
     const noMore = require.body.skip;
 
-    openMenue = require.body.editBtn;
 
     Item.deleteOne({_id: noMore}, function(err){
         if( !err){
@@ -169,29 +168,35 @@ app.post("/update", function(require,response){
             console.log("item has been updated successfully for item:" + updateItem );
             
         }
-        
-       
-        
+
       });
       // updated the item, not go back to root and render what we do have left
     response.redirect("/");
 });
 
 
-// need to test out an idea
-app.post("/test", function(require, response){
+// gets 
+app.post("/openId", function(require, response){
 
-   testValue = require.body.testBtn;
+   openValueId = require.body.editBtn;
 
-  // testValue = Item.name; 
  
-  console.log("this is the name of the item clicked on: " + testValue);
+  console.log("this is the name of the item clicked on: " + openValueId);
 
  
     response.redirect("/");
 
 
 });
+
+// close the 'edit' pop up  
+app.post("/close", function(require,response){
+
+  openValueId = null; 
+  response.redirect("/");
+  
+});
+
 app.listen(5000,function(){
     console.log("connected to port 5000");
 });
