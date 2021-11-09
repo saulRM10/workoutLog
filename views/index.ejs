@@ -16,15 +16,27 @@
     }
     table{
         width: 50%;
+        text-align: center;
+        margin:auto;
     }
+
+    
     
     input{
         width: 100px;
+        margin: auto;
+        text-align: center;
+    }
+    form{
+        padding-top: 30px;
+        padding-bottom: 40px;
+        margin: auto;
+        text-align: center;
     }
 </style>
 
 <body>
-    <h1> <%= grindMSG %></h1>
+    <h1 style="text-align: center;"> <%= grindMSG %></h1>
   
 
     
@@ -60,7 +72,7 @@
                     
                         <% if(  OpenEditId == item.name ){ %>
                             <% if( i ==1 ){ %>
-                                <form action="/update" method="post">
+                                <form style="margin: auto; text-align: center;" action="/update" method="post">
         
                                     <!-- <td><input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off"></td>
                                     <td><input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off"></td>
@@ -70,7 +82,7 @@
                             <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> </td> 
                             <td><button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
                             <td><button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </td>  -->
-                                <h3> Edit : <%= item.name %> </h3> <br>
+                                <h3 style=" text-align: center;"> Edit : <%= item.name %> </h3> <br>
                                     <input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off">
                                     <input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off">
                                     <input type="text" name="updateRepNum"  placeholder="<%= item.reps %>"autocomplete="off">
