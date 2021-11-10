@@ -74,9 +74,9 @@ const item1 = new Item({
 
   const defaultItems = [ item1];
 
-  // create a place to store multiple workout log 
+  //create a place to store multiple workout log 
 const logSchema ={
-  name: String,
+  WkName: String,
   // contains an array of 'items' = exercises, sets , reps , weight 
   logs: [itemsSchema] 
 };
@@ -89,12 +89,9 @@ const Log = mongoose.model("Log", logSchema);
   let openValueId; 
 
 
-  // array for the weight 
-  let weightData =[];
-
 app.get("/", function(require, response){
 
-    let msg = "workout log";
+  
 
     Item.find({}, function(err, foundItems){
 
@@ -112,7 +109,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { grindMSG: msg , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
+            response.render('index', { routineName: "workout log A" , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
 
         }
 
@@ -123,32 +120,35 @@ app.get("/", function(require, response){
 });
 
 // create new workout log, named whatever you want
-// app.get("/:customLogName", function(require,response){
+app.get("/:customLogName", function(require,response){
 
-//     const customLogName = require.params.customLogName;
+    const customLogName = require.params.customLogName;
 
+    console.log("this is the new name: " + customLogName);
+      // need to check if a 'log' of the same name already exist 
+      Log.findOne({ WkName:customLogName}, function(err , foundLogs){
 
-//       // need to check if a 'log' of the same name already exist 
-//       Log.findOne({name:customLogName}, function(err , foundLogs){
+          if(!err){
+            // if log does not exist if foundLogs, create one 
+              if( !foundLogs ){
+                  // create a new log 
+                  const log = new Log({
 
-//           if(!err){
-//             // if log does not exist if foundLogs, create one 
-//               if( !foundLogs ){
-//                   // create a new log 
-//                   const log = new Log({
-
-//                     name: customLogName,
-//                     items: defaultItems
-//                 });
+                    WkName: customLogName,
+                    logs: defaultItems
+                });
             
-//                   log.save();
-//               }else{
-//                 // display the existing log, that can be found in foundLogs
-//                 response.render('index', { })
-//               }
-//           }
-//       })
-// });
+                  log.save();
+                  console.log("redirect here: " + customLogName);
+                  response.redirect("/" + customLogName);
+              }
+              else{
+                // display the existing log, that can be found in foundLogs
+                response.render('index', { routineName: foundLogs.WkName , workout: foundLogs.logs, OpenEditId: null , NumOfSets : sets });
+              }
+          }
+      })
+});
 
 
 app.post("/", function(require, response){
