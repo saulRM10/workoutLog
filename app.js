@@ -124,7 +124,6 @@ app.get("/:customLogName", function(require,response){
 
     const customLogName = require.params.customLogName;
 
-    console.log("this is the new name: " + customLogName);
       // need to check if a 'log' of the same name already exist 
       Log.findOne({ WkName:customLogName}, function(err , foundLogs){
 
@@ -139,7 +138,7 @@ app.get("/:customLogName", function(require,response){
                 });
             
                   log.save();
-                  console.log("redirect here: " + customLogName);
+                  
                   response.redirect("/" + customLogName);
               }
               else{
