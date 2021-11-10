@@ -45,6 +45,7 @@ const itemsSchema = {
 const Item = mongoose.model("Item", itemsSchema);
 
 
+
   // 6) create new 'documents' == default items
 
 const item1 = new Item({
@@ -72,6 +73,16 @@ const item1 = new Item({
   // const defaultItems = [ item1, item2, item3];
 
   const defaultItems = [ item1];
+
+  // create a place to store multiple workout log 
+const logSchema ={
+  name: String,
+  // contains an array of 'items' = exercises, sets , reps , weight 
+  logs: [itemsSchema] 
+};
+
+// create a mongoose model based on the second schema 
+const Log = mongoose.model("Log", logSchema);
  
 
   let openMenue = 0;
@@ -110,6 +121,34 @@ app.get("/", function(require, response){
  
     
 });
+
+// create new workout log, named whatever you want
+// app.get("/:customLogName", function(require,response){
+
+//     const customLogName = require.params.customLogName;
+
+
+//       // need to check if a 'log' of the same name already exist 
+//       Log.findOne({name:customLogName}, function(err , foundLogs){
+
+//           if(!err){
+//             // if log does not exist if foundLogs, create one 
+//               if( !foundLogs ){
+//                   // create a new log 
+//                   const log = new Log({
+
+//                     name: customLogName,
+//                     items: defaultItems
+//                 });
+            
+//                   log.save();
+//               }else{
+//                 // display the existing log, that can be found in foundLogs
+//                 response.render('index', { })
+//               }
+//           }
+//       })
+// });
 
 
 app.post("/", function(require, response){
