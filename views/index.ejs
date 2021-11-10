@@ -65,8 +65,8 @@
                     <td><%= item.reps %></td>
                     <td><%= item.weight[i] %></td>
                     <% if( i ==0 ){ %>
-<!--                       
-                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td> -->
+                    
+                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td> 
 
                         <% } %>
                     
@@ -74,14 +74,7 @@
                             <% if( i ==1 ){ %>
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
         
-                                    <!-- <td><input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off"></td>
-                                    <td><input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off"></td>
-                                    <td><input type="text" name="updateRepNum"  placeholder="<%= item.reps %>"autocomplete="off"></td>
-                                    <td><input type="text" name="updateWeight" placeholder="<%= item.weight %>" autocomplete="off"></td>
-                          
-                            <td><button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> </td> 
-                            <td><button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> </td> 
-                            <td><button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </td>  -->
+                                   
                                 <h3 style=" text-align: center;"> Edit : <%= item.name %> </h3> <br>
                                     <input type="text" name="updateName" placeholder="<%= item.name %>" autocomplete="off">
                                     <input type="text" name="updateSetNum" placeholder="<%= item.sets %>" autocomplete="off">

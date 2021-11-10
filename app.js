@@ -135,7 +135,7 @@ app.post("/", function(require, response){
 
     // get number of sets and then give them the input space so we can collect the data to then display
         
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightData };
+   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
    
  
     Item.insertMany(myobj, function(err, response) {
@@ -181,8 +181,13 @@ app.post("/update", function(require,response){
     let newRepNum = require.body.updateRepNum;
     let newWeight= require.body.updateWeight;
 
+    let NewWeightDatastring =[];
+    NewWeightDatastring = newWeight.split(',');
+
+  
+
       var myquery = {  _id: updateItem };
-      var newValues = { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: newWeight  } };
+      var newValues = { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
       //let userInput = response.body.newItemData; 
 
        Item.updateOne(myquery, newValues, function(err, response) {
