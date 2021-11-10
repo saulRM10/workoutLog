@@ -63,10 +63,10 @@
                     <!-- <td><%= item.name %></td> -->
                     <td> Set <%= i+1 %>: </td>
                     <td><%= item.reps %></td>
-                    <td><%= item.weight %></td>
+                    <td><%= item.weight[i] %></td>
                     <% if( i ==0 ){ %>
-                      
-                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td>
+<!--                       
+                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td> -->
 
                         <% } %>
                     
@@ -114,9 +114,10 @@
         <input type="text " name="repsNum" placeholder="rep #" autocomplete="off"> 
 
         <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
+
         <button  type="submit" name="button">submit</button>
 
-    
+
     </form>
 
 

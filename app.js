@@ -39,7 +39,7 @@ const itemsSchema = {
     name: String,
     sets: String,
     reps: String,
-    weight: String
+    weight: Array
   };
   // 5) cerate a mongoose model based on the schema 
 const Item = mongoose.model("Item", itemsSchema);
@@ -51,28 +51,35 @@ const item1 = new Item({
     name: "bench",
     sets: "4",
     reps:"8",
-    weight: "225"
+    weight: [135,185,205,225]
   });
   
-  const item2 = new Item({
-    name: "squat",
-    sets: "3",
-    reps:"12",
-    weight: "315"
-  });
+  // const item2 = new Item({
+  //   name: "squat",
+  //   sets: "3",
+  //   reps:"12",
+  //   weight: "315"
+  // });
   
-  const item3 = new Item({
-    name: "overhead press ",
-    sets: "3",
-    reps:"8",
-    weight: "135"
+  // const item3 = new Item({
+  //   name: "overhead press ",
+  //   sets: "3",
+  //   reps:"8",
+  //   weight: "135"
 
-  });
+  // });
 
-  const defaultItems = [ item1, item2, item3];
+  // const defaultItems = [ item1, item2, item3];
+
+  const defaultItems = [ item1];
+ 
 
   let openMenue = 0;
   let openValueId; 
+
+
+  // array for the weight 
+  let weightData =[];
 
 app.get("/", function(require, response){
 
@@ -94,7 +101,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { grindMSG: msg , workout: foundItems, OpenEditId: openValueId });
+            response.render('index', { grindMSG: msg , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
 
         }
 
@@ -110,14 +117,27 @@ app.post("/", function(require, response){
     let exrName = require.body.newExr;
 
     let NumSet = require.body.setNum;
+    //  sets = require.body.setNum;
 
     let NumReps = require.body.repsNum;
 
     let wght = require.body.weight;
 
+    // create an array of weight to store the weight 
+   
 
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: wght };
+     let weightDatastring =[];
+     weightDatastring = wght.split(',');
+
+     console.log(weightDatastring);
+   
     
+
+    // get number of sets and then give them the input space so we can collect the data to then display
+        
+   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightData };
+   
+ 
     Item.insertMany(myobj, function(err, response) {
         if (err) {
             console.log("you did not add the item");
@@ -126,6 +146,9 @@ app.post("/", function(require, response){
             console.log("item inserted");
         }
     });
+  
+  
+  
     response.redirect("/");
     
 
