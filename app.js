@@ -130,16 +130,7 @@ app.get("/:customLogName", function(require,response){
           if(!err){
             // if log does not exist if foundLogs, create one 
               if( !foundLogs ){
-                //   // create a new log 
-                //   const log = new Log({
-
-                //     WkName: customLogName,
-                //     logs: defaultItems
-                // });
-            
-                //   log.save();
-                  
-                //   response.redirect("/" + customLogName);
+               
                 Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
 
                   if( err){
