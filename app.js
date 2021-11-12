@@ -45,7 +45,7 @@ const itemsSchema = {
 const Item = mongoose.model("Item", itemsSchema);
 
 
-
+const defaultItems =[];
   // 6) create new 'documents' == default items
 
 const item1 = new Item({
@@ -72,7 +72,7 @@ const item1 = new Item({
 
   // const defaultItems = [ item1, item2, item3];
 
-  const defaultItems = [ item1];
+   defaultItems.push(item1);
 
   //create a place to store multiple workout log 
 const logSchema ={
@@ -109,7 +109,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { routineName: "workout log A" , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
+            response.render('index', { routineName: "logA" , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
 
         }
 
@@ -130,16 +130,26 @@ app.get("/:customLogName", function(require,response){
           if(!err){
             // if log does not exist if foundLogs, create one 
               if( !foundLogs ){
-                  // create a new log 
-                  const log = new Log({
+                //   // create a new log 
+                //   const log = new Log({
 
-                    WkName: customLogName,
-                    logs: defaultItems
-                });
+                //     WkName: customLogName,
+                //     logs: defaultItems
+                // });
             
-                  log.save();
+                //   log.save();
                   
-                  response.redirect("/" + customLogName);
+                //   response.redirect("/" + customLogName);
+                Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
+
+                  if( err){
+                    console.log(err);
+                  }else {
+                    console.log(" inserted default items into database");
+                  }
+              } );
+              // we need to render items just created 
+          response.redirect("/"+customLogName);
               }
               else{
                 // display the existing log, that can be found in foundLogs
@@ -167,28 +177,62 @@ app.post("/", function(require, response){
      let weightDatastring =[];
      weightDatastring = wght.split(',');
 
-     console.log(weightDatastring);
    
-    
+    const whatRoutine = require.body.button;
 
     // get number of sets and then give them the input space so we can collect the data to then display
-        
-   let myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
-   
+        // create the 'object'
+   const myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+
  
+
+   if( whatRoutine === "logA"){
     Item.insertMany(myobj, function(err, response) {
-        if (err) {
-            console.log("you did not add the item");
-        }
-        else { 
-            console.log("item inserted");
-        }
-    });
-  
-  
-  
-    response.redirect("/");
+      if (err) {
+          console.log("you did not add the item");
+      }
+      else { 
+          console.log("item inserted");
+      }
+  });
+
+  response.redirect("/");
+
     
+}
+else{
+
+//Need to see what routine this myObj belongs too 
+ Log.findOne({WkName: whatRoutine}, function(err, foundLogs){
+
+   
+  // tap in to found logs, tap in to items, push myobj into array of items (items = exercise + sets + reps + weight ) 
+   foundLogs.logs.push(myobj);
+
+    foundLogs.save();
+    // render the new item in the routine it belongs too 
+    response.redirect("/" + whatRoutine);
+ });
+  
+
+// this is how to update an item from a different log 
+// const myQ = { WkName : whatRoutine};
+// //{ $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
+// const upMyobj = {$set:{logs: myobj}};
+// Log.updateOne(myQ, upMyobj, function(err, response) {
+//   if( !err){
+
+//       console.log("item has been updated successfully for item:" );
+      
+//   }
+
+// });
+
+// response.redirect("/"+ whatRoutine);
+// ^ update code 
+
+
+}
 
 });
 
