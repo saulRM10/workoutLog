@@ -78,7 +78,19 @@ app.get("/goHome", function(require, response){
 
   console.log("i want to go home "); 
 
+  Log.findOne({WkName: "legdaybro"}, function(err, logsFound){
+
+    if( !err){
+      console.log( "name of workout found: " + logsFound.WkName);
+    }
+
+
+  response.render('home',{  listofNames: logsFound.WkName});
+  });
+
+
 });
+
 app.get("/", function(require, response){
 
   
