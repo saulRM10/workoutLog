@@ -55,22 +55,7 @@ const item1 = new Item({
     weight: [135,185,205,225]
   });
   
-  // const item2 = new Item({
-  //   name: "squat",
-  //   sets: "3",
-  //   reps:"12",
-  //   weight: "315"
-  // });
   
-  // const item3 = new Item({
-  //   name: "overhead press ",
-  //   sets: "3",
-  //   reps:"8",
-  //   weight: "135"
-
-  // });
-
-  // const defaultItems = [ item1, item2, item3];
 
    defaultItems.push(item1);
 
@@ -246,7 +231,7 @@ app.post("/delete", function(require, response ){
 // create a route to update item 
 app.post("/update", function(require,response){
 
-    // store 'weight:' of the item we want to update 
+    
     const updateItem = require.body.needsUpdate;
     
     let newName = require.body.updateName;
