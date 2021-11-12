@@ -73,7 +73,12 @@ const Log = mongoose.model("Log", logSchema);
   let openMenue = 0;
   let openValueId; 
 
+// go home and render home page 
+app.get("/goHome", function(require, response){
 
+  console.log("i want to go home "); 
+
+});
 app.get("/", function(require, response){
 
   
@@ -94,7 +99,7 @@ app.get("/", function(require, response){
         } 
         
         else{
-            response.render('index', { routineName: "logA" , workout: foundItems, OpenEditId: openValueId , NumOfSets : sets});
+            response.render('index', { routineName: "logA" , workout: foundItems, OpenEditId: openValueId });
 
         }
 
@@ -136,7 +141,7 @@ app.get("/:customLogName", function(require,response){
               }
               else{
                 // display the existing log, that can be found in foundLogs
-                response.render('index', { routineName: foundLogs.WkName , workout: foundLogs.logs, OpenEditId: null , NumOfSets : sets });
+                response.render('index', { routineName: foundLogs.WkName , workout: foundLogs.logs, OpenEditId: null  });
               }
           }
       })
@@ -148,7 +153,7 @@ app.post("/", function(require, response){
     let exrName = require.body.newExr;
 
     let NumSet = require.body.setNum;
-    //  sets = require.body.setNum;
+  
 
     let NumReps = require.body.repsNum;
 
