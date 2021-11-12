@@ -104,6 +104,13 @@ app.get("/", function(require, response){
     
 });
 
+// get user data from the form and use it redirect to /customLogName 
+app.post("/newpage", function(require,response){
+
+    const pageName= require.body.newpageName;
+
+    response.redirect("/"+ pageName);
+});
 // create new workout log, named whatever you want
 app.get("/:customLogName", function(require,response){
 
