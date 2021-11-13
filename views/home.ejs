@@ -12,7 +12,12 @@
     <!-- display list of logs, only the name of the routine  -->
     <h1> hello world, i was rendered </h1>
 
-        <h3> <%= listofNames %></h3>
+
+    <% for( var i =0 ; i < listofNames.length ; i++) {   %>
+
+        <h3> <%= listofNames[i] %></h3>
+
+        <% } %> 
 
 </body>
 </html>

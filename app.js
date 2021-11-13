@@ -9,6 +9,7 @@ const { setServers } = require("dns");
 
 const mongoose = require("mongoose");
 const { redirect } = require("statuses");
+const { all } = require("async");
 
 const app = express();
 
@@ -73,23 +74,28 @@ const Log = mongoose.model("Log", logSchema);
   let openMenue = 0;
   let openValueId; 
 
+    let logNames =[];
 // go home and render home page 
 app.get("/goHome", function(require, response){
 
-  console.log("i want to go home "); 
+  
+    //allLogsCreated.toArray;
+    //const itemsHere =
+    Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
-  Log.findOne({WkName: "legdaybro"}, function(err, logsFound){
+      if(!err){
+        console.log("size of name of logs: " + logNamesHere.length  );
+        response.render('home',{  listofNames: logNamesHere});
+      }
 
-    if( !err){
-      console.log( "name of workout found: " + logsFound.WkName);
-    }
+    });
 
-
-  response.render('home',{  listofNames: logsFound.WkName});
+    //console.log("size of name of logs: "  );
+  
   });
 
 
-});
+// });
 
 app.get("/", function(require, response){
 
@@ -126,6 +132,10 @@ app.post("/newpage", function(require,response){
 
     const pageName= require.body.newpageName;
 
+   
+
+    console.log(" amount of logs:" + logNames.length);
+
     response.redirect("/"+ pageName);
 });
 // create new workout log, named whatever you want
@@ -141,6 +151,8 @@ app.get("/:customLogName", function(require,response){
               if( !foundLogs ){
                
                 Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
+
+                  logNames.push(customLogName);
 
                   if( err){
                     console.log(err);
