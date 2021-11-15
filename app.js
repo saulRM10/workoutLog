@@ -83,8 +83,9 @@ app.get("/goHome", function(require, response){
     //const itemsHere =
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
+      // console.log("name of logs: " + logNamesHere.length  );
       if(!err){
-        console.log("size of name of logs: " + logNamesHere.length  );
+       
         response.render('home',{  listofNames: logNamesHere});
       }
 
@@ -131,10 +132,6 @@ app.get("/", function(require, response){
 app.post("/newpage", function(require,response){
 
     const pageName= require.body.newpageName;
-
-   
-
-    console.log(" amount of logs:" + logNames.length);
 
     response.redirect("/"+ pageName);
 });

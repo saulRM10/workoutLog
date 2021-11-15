@@ -9,15 +9,17 @@
 <body>
     <h1> workout history </h1>
 
-    <!-- display list of logs, only the name of the routine  -->
-    <h1> hello world, i was rendered </h1>
+  
 
+    <% listofNames.forEach(function(item){ %> 
+        <h3> <%= item.WkName %></h3>
+        <form action="/<%= item.WkName %>" method="get">
+            <button type="submit" name="goHere"> open </button>
+        </form>
+        <% }) %>
+   
 
-    <% for( var i =0 ; i < listofNames.length ; i++) {   %>
-
-        <h3> <%= listofNames[i] %></h3>
-
-        <% } %> 
+       
 
 </body>
 </html>
