@@ -9,12 +9,24 @@
 <body>
     <h1> workout history </h1>
 
-  
+    <form action="/newpage" method="post">
+        
+        <input type="text" name="newpageName" placeholder="new routine" autocomplete="off">
+        <button type="submit" name="newpageBtn" > create +</button>
+        
+    </form>
 
     <% listofNames.forEach(function(item){ %> 
         <h3> <%= item.WkName %></h3>
+
+        
+        <!-- <h2> <%= item._id %></h2> -->
         <form action="/<%= item.WkName %>" method="get">
-            <button type="submit" name="goHere"> open </button>
+            <button  type="submit" name="goHere"> open </button>
+        </form>
+
+        <form action="/deleteLog" method="post">
+            <button  type="submit" name="dl" value="<%= item._id %>"> delete </button>
         </form>
         <% }) %>
    

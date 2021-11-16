@@ -78,12 +78,8 @@ const Log = mongoose.model("Log", logSchema);
 // go home and render home page 
 app.get("/goHome", function(require, response){
 
-  
-    //allLogsCreated.toArray;
-    //const itemsHere =
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
-      // console.log("name of logs: " + logNamesHere.length  );
       if(!err){
        
         response.render('home',{  listofNames: logNamesHere});
@@ -91,12 +87,10 @@ app.get("/goHome", function(require, response){
 
     });
 
-    //console.log("size of name of logs: "  );
+
   
   });
 
-
-// });
 
 app.get("/", function(require, response){
 
@@ -135,6 +129,7 @@ app.post("/newpage", function(require,response){
 
     response.redirect("/"+ pageName);
 });
+
 // create new workout log, named whatever you want
 app.get("/:customLogName", function(require,response){
 
@@ -243,6 +238,21 @@ else{
 
 }
 
+});
+
+app.post("/deleteLog", function(require, response){
+
+  const dtLog = require.body.dl;
+    console.log("this is the element you want to delete : "+ dtLog );
+
+    Log.deleteOne({_id: dtLog}, function(err){
+
+      if( !err){
+        console.log("log has been deleted successfully");
+    }
+    // deleted the item, not go back to root and render what we do have left
+    response.redirect("/goHome");
+    });
 });
 
 
