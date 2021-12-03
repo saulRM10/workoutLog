@@ -162,11 +162,14 @@ app.get("/:customLogName", function(require,response){
                   }
                   
               } );
+              // CHECK FOR UPDATED ITEMS  OR DELETED ITEMS 
+                
+                
 
               // need to render/check for deleted items => exName, sets , reps, weight 
              
               // we need to render items just created 
-          response.redirect("/"+ customLogName);
+                    response.redirect("/"+ customLogName);
               }
               else{
                 // display the existing log, that can be found in foundLogs
@@ -252,12 +255,12 @@ app.post("/createItem", function(require, response){
 
 
 
-app.post("/deleteLog", function(require, response){
+app.post("/deleteRoutine", function(require, response){
 
-  const dtLog = require.body.dl;
-    console.log("this is the element you want to delete : "+ dtLog );
+  const dtRoutine = require.body.deltRotn;
+  
 
-    Log.deleteOne({_id: dtLog}, function(err){
+    Log.deleteOne({_id: dtRoutine}, function(err){
 
       if( !err){
         console.log("log has been deleted successfully");
@@ -297,22 +300,32 @@ app.post("/update", function(require,response){
     let NewWeightDatastring =[];
     NewWeightDatastring = newWeight.split(',');
 
+  // console.log(" this is the new name : " +  newName);
+  // console.log(" this is the new sets : " +  newSetNum);
+  // console.log(" this is the new reps : " + newRepNum);
+  // console.log(" this is the new weight : " + newWeight);
   
-
-     var myquery = { WkName: inthisRoutine ,  _id: updateItem };
-      var newValues = { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
+ 
+     //var myquery = {  "_id ": updateItem};
+     console.log(" this is the the query: " + updateItem);
+      var newValues = { 
+        $set: 
+          {
+            name: newName, 
+            sets: newSetNum, 
+            reps: newRepNum, 
+            weight: NewWeightDatastring  }
+           };
       //let userInput = response.body.newItemData; 
 
       // updated the item, not go back to root and render what we do have left
-  Log.updateOne( myquery,newValues,function(err, response) {
+  Log.updateOne( {WkName: inthisRoutine},{ name: "pls"},newValues,function(err, response) {
 
     if(!err){
-              console.log("item updated in LOG: " + inthisRoutine + " is now : " + newName );
+             // console.log("item updated in LOG: " + inthisRoutine + " is now : " + Item.find({_id: updateItem}) );
             }
+           
            // response.redirect("/" + inthisRoutine );
-
-           // updated the item now push it ?
-          
         });
 
         
