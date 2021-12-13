@@ -277,11 +277,11 @@ app.post("/delete", function(require, response ){
     const noMore = require.body.skip;
 
 
-    Item.deleteOne({_id: noMore}, function(err){
+    Log.deleteOne({_id: noMore}, function(err){
         if( !err){
             console.log("item has been deleted successfully: " + noMore);
         }
-        // deleted the item, not go back to root and render what we do have left
+        // deleted the item, now go back to root and render what we do have left
         response.redirect("/"+ inthisRoutine);
     });    
 });
