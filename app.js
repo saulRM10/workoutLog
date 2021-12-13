@@ -273,11 +273,11 @@ app.post("/deleteRoutine", function(require, response){
 
 /// used to delete items of the list
 app.post("/delete", function(require, response ){
-  console.log("left off here" );
+
     const noMore = require.body.skip;
 
 
-    Log.deleteOne({_id: noMore}, function(err){
+    Log.deleteOne({name: noMore}, function(err){
         if( !err){
             console.log("item has been deleted successfully: " + noMore);
         }

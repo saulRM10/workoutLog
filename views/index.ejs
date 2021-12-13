@@ -82,7 +82,7 @@
                                     <input type="text" name="updateWeight" placeholder="<%= item.weight %>" autocomplete="off">
                           
                             <button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
-                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> 
+                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= item.name %>"> delete </button> 
                             <button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </input> 
                                 </form>
                             <% } %>
