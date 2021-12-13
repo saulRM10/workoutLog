@@ -149,8 +149,9 @@ app.get("/:customLogName", function(require,response){
 
           if(!err){
             // if log  under the customLogName does not exist if foundLogs, create one 
-              if( !foundLogs ){
-               
+            //  if( !foundLogs ){ 
+              // if found logs is empty, populate with defaults 
+              if( !foundLogs){
                 Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
 
                   logNames.push(customLogName);
