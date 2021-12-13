@@ -273,7 +273,7 @@ app.post("/deleteRoutine", function(require, response){
 
 /// used to delete items of the list
 app.post("/delete", function(require, response ){
-
+  console.log("left off here" );
     const noMore = require.body.skip;
 
 
