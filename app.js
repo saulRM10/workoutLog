@@ -148,6 +148,9 @@ app.get("/:customLogName", function(require,response){
       Log.findOne({ WkName:customLogName}, function(err , foundLogs){
 
           if(!err){
+
+            // maybe i need to insert items to items collection because it is always empty 
+            //Item.insertMany(defaultItems);
             // if log  under the customLogName does not exist if foundLogs, create one 
             //  if( !foundLogs ){ 
               // if found logs is empty, populate with defaults 
@@ -278,7 +281,7 @@ app.post("/delete", function(require, response ){
     const noMore = require.body.skip;
 
 
-    Log.deleteOne({name: noMore}, function(err){
+    Log.deleteOne({_id: noMore}, function(err){
         if( !err){
             console.log("item has been deleted successfully: " + noMore);
         }
