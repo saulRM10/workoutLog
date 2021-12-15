@@ -150,6 +150,22 @@ app.get("/:customLogName", function(require,response){
           if(!err){
 
             // maybe i need to insert items to items collection because it is always empty 
+            // chack and see if the there are any items in Items 
+            Item.find({}, function(err, foundItems){
+
+              if( foundItems.length === 0 ){
+                  Item.insertMany(defaultItems,function(err){
+      
+                      if( err){
+                        console.log(err);
+                      }else {
+                        console.log(" inserted default items into database");
+                      }
+                  } );
+                  // we need to render items just created 
+             // response.redirect("/" + inthisRoutine);
+              }
+            }); 
             //Item.insertMany(defaultItems);
             // if log  under the customLogName does not exist if foundLogs, create one 
             //  if( !foundLogs ){ 
