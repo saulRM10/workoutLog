@@ -162,39 +162,42 @@ app.get("/:customLogName", function(require,response){
                         console.log(" inserted default items into database");
                       }
                   } );
+                }
                   // we need to render items just created 
              // response.redirect("/" + inthisRoutine);
-              }
-            }); 
-            //Item.insertMany(defaultItems);
-            // if log  under the customLogName does not exist if foundLogs, create one 
-            //  if( !foundLogs ){ 
-              // if found logs is empty, populate with defaults 
-              if( !foundLogs){
-                Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
+                  else {
+                    if( !foundLogs){
+                      Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
+      
+                        logNames.push(customLogName);
+      
+                        if( err){
+                          console.log(err);
+                        }else {
+                          console.log(" inserted default items into database");
+                        }
+                        
+                    } );
+                    // CHECK FOR UPDATED ITEMS  OR DELETED ITEMS 
+                      
+                      
+      
+                    // need to render/check for deleted items => exName, sets , reps, weight 
+                   
+                    // we need to render items just created 
+                          response.redirect("/"+ customLogName);
+                    }
+                    else{
+                      // display the existing log, that can be found in foundLogs
 
-                  logNames.push(customLogName);
-
-                  if( err){
-                    console.log(err);
-                  }else {
-                    console.log(" inserted default items into database");
+                      console.log("this is the length of found items: " + foundItems.length);
+                      response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
+                    } 
                   }
-                  
-              } );
-              // CHECK FOR UPDATED ITEMS  OR DELETED ITEMS 
-                
-                
-
-              // need to render/check for deleted items => exName, sets , reps, weight 
-             
-              // we need to render items just created 
-                    response.redirect("/"+ customLogName);
-              }
-              else{
-                // display the existing log, that can be found in foundLogs
-                response.render('index', { routineName: foundLogs.WkName , workout: foundLogs.logs, OpenEditId: openValueId  });
-              }
+              //}
+            }); 
+         
+              
           }
       })
 });
@@ -243,9 +246,11 @@ app.post("/createItem", function(require, response){
 //Need to see what routine this myObj belongs too 
   Log.findOne({WkName: whatRoutine}, function(err, foundLogs){
 
+    // insert to items collections as well 
+      Item.insertMany(myobj); 
     
     // tap in to found logs, tap in to items, push myobj into array of items (items = exercise + sets + reps + weight ) 
-    foundLogs.logs.push(myobj);
+      foundLogs.logs.push(myobj);
 
       foundLogs.save();
       // render the new item in the routine it belongs too 
