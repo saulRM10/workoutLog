@@ -300,15 +300,16 @@ app.post("/deleteRoutine", function(require, response){
 app.post("/delete", function(require, response ){
 
     const noMore = require.body.skip;
+    
+      Item.deleteOne({_id:noMore}, function(err){
 
-
-    Log.deleteOne({_id: noMore}, function(err){
-        if( !err){
-            console.log("item has been deleted successfully: " + noMore);
+        
+        if(!err){
+          console.log("delete this item with an ID of : "+noMore);
         }
-        // deleted the item, now go back to root and render what we do have left
-        response.redirect("/"+ inthisRoutine);
-    });    
+      });
+      response.redirect("/" + inthisRoutine);
+   // }); 
 });
 
 // create a route to update item 
