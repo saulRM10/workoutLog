@@ -300,7 +300,7 @@ app.post("/deleteRoutine", function(require, response){
 app.post("/delete", function(require, response ){
 
     const noMore = require.body.skip;
-    
+
       Item.deleteOne({_id:noMore}, function(err){
 
         
@@ -345,13 +345,12 @@ app.post("/update", function(require,response){
       //let userInput = response.body.newItemData; 
 
       // updated the item, not go back to root and render what we do have left
-  Log.updateOne( {WkName: inthisRoutine},{ name: "pls"},newValues,function(err, response) {
+  Item.updateOne( {_id: updateItem},newValues,function(err, response) {
 
     if(!err){
-             // console.log("item updated in LOG: " + inthisRoutine + " is now : " + Item.find({_id: updateItem}) );
+             console.log("item updated in LOG: " + inthisRoutine );
             }
-           
-           // response.redirect("/" + inthisRoutine );
+       
         });
 
         
