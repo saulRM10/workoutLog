@@ -347,26 +347,27 @@ app.post("/update", function(require,response){
 
 app.post("/updateRoutineName", function(require,response){
 
- // const newRoutineName = require.body
-  // this is how to update an item from a different log 
- //const myQuerry = { WkName : whatRoutine};
-  // { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
- //const updatedName = {$set:{WkName: newRoutineName}};
-// Log.updateOne(myQ, upMyobj, function(err, response) {
-//   if( !err){
+    const newRoutineName = require.body.updateRoutineName;
+    const updateItem = require.body.needsUpdate;
 
-//       console.log("item has been updated successfully for item:" );
-      
-//   }
+    console.log("new routine name: " + newRoutineName);
+   
+    var updatedName = {
+                          $set:
+                              {
+                                WkName: newRoutineName
+                              }};
+    Log.updateOne({ _id : updateItem}, updatedName, function(err, response) {
+          
+          if( !err){
 
-// });
+            console.log("item has been updated successfully for item:" );
+            
+          }
+
+      });
 
 response.redirect("/");
-// ^ update code 
-
-
-//}
-
 
 });
 
