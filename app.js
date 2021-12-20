@@ -349,8 +349,6 @@ app.post("/updateRoutineName", function(require,response){
 
     const newRoutineName = require.body.updateRoutineName;
     const updateItem = require.body.needsUpdate;
-
-    console.log("new routine name: " + newRoutineName);
    
     var updatedName = {
                           $set:
