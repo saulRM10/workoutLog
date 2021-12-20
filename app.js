@@ -259,24 +259,7 @@ app.post("/createItem", function(require, response){
 });
   
 
-// this is how to update an item from a different log 
-// const myQ = { WkName : whatRoutine};
-// //{ $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
-// const upMyobj = {$set:{logs: myobj}};
-// Log.updateOne(myQ, upMyobj, function(err, response) {
-//   if( !err){
 
-//       console.log("item has been updated successfully for item:" );
-      
-//   }
-
-// });
-
-// response.redirect("/"+ whatRoutine);
-// ^ update code 
-
-
-//}
 
 
 
@@ -361,6 +344,30 @@ app.post("/update", function(require,response){
     
 });
 
+app.post("/updateRoutineName", function(require,response){
+
+ // const newRoutineName = require.body
+  // this is how to update an item from a different log 
+ //const myQuerry = { WkName : whatRoutine};
+  // { $set: {name: newName, sets: newSetNum, reps: newRepNum, weight: NewWeightDatastring  } };
+ //const updatedName = {$set:{WkName: newRoutineName}};
+// Log.updateOne(myQ, upMyobj, function(err, response) {
+//   if( !err){
+
+//       console.log("item has been updated successfully for item:" );
+      
+//   }
+
+// });
+
+// response.redirect("/"+ whatRoutine);
+// ^ update code 
+
+
+//}
+
+
+});
 
 // gets 
 app.post("/openId", function(require, response){
