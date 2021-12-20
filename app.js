@@ -10,6 +10,7 @@ const { setServers } = require("dns");
 const mongoose = require("mongoose");
 const { redirect } = require("statuses");
 const { all, timeout } = require("async");
+const { homedir } = require("os");
 
 const app = express();
 
@@ -360,7 +361,7 @@ app.post("/updateRoutineName", function(require,response){
 
 // });
 
-// response.redirect("/"+ whatRoutine);
+response.redirect("/");
 // ^ update code 
 
 
@@ -374,24 +375,41 @@ app.post("/openId", function(require, response){
 
   // i am on this item, item I want to edit ( name, reps, sets, weight)
    openValueId = require.body.editBtn;
-    
- 
-  console.log("this is the name of the item clicked on: " + openValueId);
+   response.redirect("/" + inthisRoutine);
 
- // here is the edit 
-    response.redirect("/" + inthisRoutine);
+});
+
+app.post("/openIdRoutine", function(require, response){
+
+  // i am on this item, item I want to edit ( name, reps, sets, weight)
+   openValueId = require.body.editBtn;
+
+  response.redirect("/");
 
 
 });
+
+
 
 // close the 'edit' pop up  
 app.post("/close", function(require,response){
 
   openValueId = null; 
+
+  
   // go to the specific page you are doing the edit;
   response.redirect("/" + inthisRoutine);
   
 });
+
+app.post("/closeRoutine", function(require, response){
+
+  openValueId = null; 
+
+  response.redirect("/"); // redirect home
+});
+
+
 
 app.listen(5000,function(){
     console.log("connected to port 5000");
