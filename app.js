@@ -88,7 +88,7 @@ app.get("/", function(require, response){
 
       if(!err){
        
-        response.render('home',{  listofNames: logNamesHere});
+        response.render('home',{  listofNames: logNamesHere, OpenEditId: openValueId });
       }
 
     });

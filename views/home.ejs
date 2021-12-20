@@ -25,11 +25,32 @@
             <button  type="submit" name="goHere"> open </button>
         </form>
 
-        <form action="/deleteRoutine" method="post">
-            <button  type="submit" name="deltRotn" value="<%= item._id %>"> delete </button>
-            <!-- <button  formaction="/updateRoutineName" type="text" name="updateRoutine" value="<%= item._id %>"> delete </button> -->
+        <!-- need to make a edit/menu option  -->
+        <form action="/delete" method="post">
+            <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.WkName%>"> edit </button></td> 
 
         </form>
+    
+                <% if(  OpenEditId == item.WkName ){ %>
+                       
+                                <form style="margin: auto; text-align: center;" action="/update" method="post">
+        
+                                   
+                                <h3 style=" text-align: center;"> Edit : <%= item.WkName %> </h3> <br>
+                                    <input type="text" name="updateName" placeholder="<%= item.WkName %>" autocomplete="off">
+                                   
+                          
+                            <button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
+                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> 
+                            <button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </input> 
+                                </form>
+                           
+                            <% } %>
+        <!-- <form action="/deleteRoutine" method="post">
+            <button  type="submit" name="deltRotn" value="<%= item._id %>"> delete </button>
+           
+
+        </form> -->
         <% }) %>
    
 
