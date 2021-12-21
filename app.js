@@ -179,11 +179,7 @@ app.get("/:customLogName", function(require,response){
                         }
                         
                     } );
-                    // CHECK FOR UPDATED ITEMS  OR DELETED ITEMS 
-                      
-                      
-      
-                    // need to render/check for deleted items => exName, sets , reps, weight 
+            
                    
                     // we need to render items just created 
                           response.redirect("/"+ customLogName);
