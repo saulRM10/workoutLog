@@ -152,18 +152,22 @@ app.get("/:customLogName", function(require,response){
 
             // maybe i need to insert items to items collection because it is always empty 
             // chack and see if the there are any items in Items 
-            Item.find({}, function(err, foundItems){
-
-              if( foundItems.length === 0 ){
-                  Item.insertMany(defaultItems,function(err){
+            
+            Item.find({}, function(err, foundItems){ // Item.find() start 
+// i dont want to insert default items any more 
+              if ( false ){
+                // jus to keep the else statement for now 
+              }
+              // if( foundItems.length === 0 ){
+              //     Item.insertMany(defaultItems,function(err){
       
-                      if( err){
-                        console.log(err);
-                      }else {
-                        console.log(" inserted default items into database");
-                      }
-                  } );
-                }
+              //         if( err){
+              //           console.log(err);
+              //         }else {
+              //           console.log(" inserted default items into database");
+              //         }
+              //     } );
+              //   }
                   // we need to render items just created 
              // response.redirect("/" + inthisRoutine);
                   else {
@@ -192,7 +196,7 @@ app.get("/:customLogName", function(require,response){
                     } 
                   }
               //}
-            }); 
+            }); // Item.find() end 
          
               
           }
