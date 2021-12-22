@@ -172,7 +172,8 @@ app.get("/:customLogName", function(require,response){
              // response.redirect("/" + inthisRoutine);
                   else {
                     if( !foundLogs){
-                      Log.insertMany([{ WkName:customLogName , logs: defaultItems}],function(err){
+                      // i need to replace default items with "foundItems" , currently using logs:defaultItems 
+                      Log.insertMany([{ WkName:customLogName , logs: foundItems}],function(err){
       
                         logNames.push(customLogName);
       
@@ -191,7 +192,6 @@ app.get("/:customLogName", function(require,response){
                     else{
                       // display the existing log, that can be found in foundLogs
 
-                      console.log("this is the length of found items: " + foundItems.length);
                       response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
                     } 
                   }
