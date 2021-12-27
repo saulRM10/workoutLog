@@ -38,6 +38,8 @@ mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true ,
 // 4) create a database schema 
 
 const itemsSchema = {
+  // add a routine ID so ik which list of exercises belongs to what routine 
+    routine_id: String, 
     name: String,
     sets: String,
     reps: String,
@@ -46,6 +48,7 @@ const itemsSchema = {
   // 5) cerate a mongoose model based on the schema 
 const Item = mongoose.model("Item", itemsSchema);
 
+const defaultItemsTwo = [];
 
 const defaultItems =[];
   // 6) create new 'documents' == default items
@@ -137,7 +140,23 @@ app.post("/newpage", function(require,response){
 
     response.redirect("/"+ pageName);
 });
-
+/**
+ * 
+ * log.find() // need to find a specific log, given the name WkName. Which returns a cursor with the results in 'foundLogs' 
+ *  
+ * if foundLogs is empty = no routine with the name of WkName exist 
+ *        then we must create that routine of name WkName
+ *            a routine needs a name, WkName and a list of Exercises 
+ *  
+ *            to populate the list of exercises, we need to look at the Items collection
+ *            but how do I know that the list of exercises belongs to a routine ???
+ * 
+ *            Assuming we know  specific collection 
+ * 
+ * 
+ * 
+ *          items are being deleted from items collection but in logs collection they still exist// not rendered but in the logs collection
+ */
 // create new workout log, named whatever you want
 app.get("/:customLogName", function(require,response){
     
@@ -145,61 +164,90 @@ app.get("/:customLogName", function(require,response){
 
     // use this variable, to know what log we are in at all times. 
       inthisRoutine = customLogName;
-      // need to check if a 'log' of the same name already exist 
+      // need to check if a 'log' of the same name already exist
+       
       Log.findOne({ WkName:customLogName}, function(err , foundLogs){
+        
+          
+     // If no documents match the specified query, the promise resolves to null
+        if ( foundLogs == null){
+            // need to just create it 
+             Log.insertMany([{ WkName:customLogName , logs: defaultItemsTwo }],function(err){
 
-          if(!err){
+              logNames.push(customLogName);
 
-            // maybe i need to insert items to items collection because it is always empty 
-            // chack and see if the there are any items in Items 
-            
-            Item.find({}, function(err, foundItems){ // Item.find() start 
-// i dont want to insert default items any more 
-              if ( false ){
-                // jus to keep the else statement for now 
-              }
-              // if( foundItems.length === 0 ){
-              //     Item.insertMany(defaultItems,function(err){
-      
-              //         if( err){
-              //           console.log(err);
-              //         }else {
-              //           console.log(" inserted default items into database");
-              //         }
-              //     } );
-              //   }
-                  // we need to render items just created 
-             // response.redirect("/" + inthisRoutine);
-                  else {
-                    if( !foundLogs){
-                      // i need to replace default items with "foundItems" , currently using logs:defaultItems 
-                      Log.insertMany([{ WkName:customLogName , logs: foundItems}],function(err){
-      
-                        logNames.push(customLogName);
-      
-                        if( err){
-                          console.log(err);
-                        }else {
-                          console.log(" inserted default items into database");
-                        }
+             }); 
+                    
+          console.log(" ( foundLogs == null ) == true ");
                         
-                    } );
+
+            response.redirect("/"+ customLogName);
+            // need to give it items, 
+         } 
+
+        // Document match the specified query, the promise is NOT null 
+        if( foundLogs != null ) {
+
+     //   console.log("this is the id of "+ inthisRoutine + " : " + foundLogs._id);
+            // find the exercises that match the id of the routine
+            Item.find({routine_id: foundLogs._id}, function(err, foundItems){ // start of Item.find()
+
+                  
+                      var updateLogs = {
+                                          $set:
+                                          {
+                                            logs: foundItems
+                                          }
+                      };
+                    Log.updateOne({ WkName:customLogName }, updateLogs , function(err){ // Log.insertMany() start 
+
+                      }); // Log.insertMany() end 
+
+                      
+                      console.log(" ( foundLogs != null ) == true ");
+                       
+                        //response.redirect("/"+ customLogName);
+                 response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId , routineID: foundLogs._id });
+            });// end of Item.find()
+
+            //response.redirect("/"+ customLogName);
+           // response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
+        }
+        //else {
+          //response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
+       // }
+        //     Item.find({}, function(err, foundItems){ // Item.find() start 
+        //         //console.log(" length of found logs: " + foundLogs.length); 
+            
+        //             if( !foundLogs){ // if foundLogs is empty 
+        //               // i need to replace default items with "foundItems" , currently using logs:defaultItems 
+        //               Log.insertMany([{ WkName:customLogName , logs: foundItems}],function(err){
+      
+        //                 logNames.push(customLogName);
+      
+        //                 if( err){
+        //                   console.log(err);
+        //                 }else {
+        //                   console.log(" inserted default items into database");
+        //                 }
+                        
+        //                   });
             
                    
-                    // we need to render items just created 
-                          response.redirect("/"+ customLogName);
-                    }
-                    else{
-                      // display the existing log, that can be found in foundLogs
+        //             // we need to render items just created 
+        //                   response.redirect("/"+ customLogName);
+        //             }
+        //             else{
+        //               // display the existing log, that can be found in foundLogs
 
-                      response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
-                    } 
-                  }
-              //}
-            }); // Item.find() end 
+        //               response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
+        //             } 
+        //           //}
+        //       //}
+        //     }); // Item.find() end 
          
               
-          }
+        //  // }
       })
 });
 
@@ -220,32 +268,16 @@ app.post("/createItem", function(require, response){
      weightDatastring = wght.split(',');
 
    
-    const whatRoutine = require.body.button;
+    const routineID = require.body.button;
 
     // get number of sets and then give them the input space so we can collect the data to then display
         // create the 'object'
-   const myobj = { name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+   const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
 
- 
 
-//    if( whatRoutine === "logA"){
-//     Item.insertMany(myobj, function(err, response) {
-//       if (err) {
-//           console.log("you did not add the item");
-//       }
-//       else { 
-//           console.log("item inserted");
-//       }
-//   });
-
-//   response.redirect("/");
-
-    
-// }
-// else{
 
 //Need to see what routine this myObj belongs too 
-  Log.findOne({WkName: whatRoutine}, function(err, foundLogs){
+  Log.findOne({_id: routineID}, function(err, foundLogs){
 
     // insert to items collections as well 
       Item.insertMany(myobj); 
@@ -255,7 +287,7 @@ app.post("/createItem", function(require, response){
 
       foundLogs.save();
       // render the new item in the routine it belongs too 
-      response.redirect("/" + whatRoutine);
+      response.redirect("/" + inthisRoutine);
   });
 });
   
@@ -284,7 +316,7 @@ app.post("/deleteRoutine", function(require, response){
 app.post("/delete", function(require, response ){
 
     const noMore = require.body.skip;
-
+      console.log("this is the item id of the deleted item: " + noMore);
       Item.deleteOne({_id:noMore}, function(err){
 
         

@@ -97,7 +97,7 @@
                 <%})%>
 
         </table>
-
+ 
     <form action="/createItem" method="post">
     
         <input type="text " name="newExr" placeholder="New Exercise" autocomplete="off"> 
@@ -108,18 +108,13 @@
 
         <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
 
-        <button  type="submit" name="button" value="<%= routineName %>">submit</button>
+        <button  type="submit" name="button" value="<%= routineID %>">submit</button>
 
 
     </form>
+    
 
-
-    <form action="/newpage" method="post">
-        
-        <input type="text" name="newpageName" placeholder="new routine" autocomplete="off">
-        <button type="submit" name="newpageBtn" > create +</button>
-        
-    </form>
+ 
 
     <form action="/" method="get">
     
