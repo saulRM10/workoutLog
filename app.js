@@ -269,14 +269,6 @@ app.post("/update", function(require,response){
     let NewWeightDatastring =[];
     NewWeightDatastring = newWeight.split(',');
 
-  // console.log(" this is the new name : " +  newName);
-  // console.log(" this is the new sets : " +  newSetNum);
-  // console.log(" this is the new reps : " + newRepNum);
-  // console.log(" this is the new weight : " + newWeight);
-  
- 
-     //var myquery = {  "_id ": updateItem};
-     console.log(" this is the the query: " + updateItem);
       var newValues = { 
         $set: 
           {
