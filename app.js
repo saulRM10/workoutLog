@@ -173,45 +173,8 @@ app.get("/:customLogName", function(require,response){
 
                  response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId , routineID: foundLogs._id });
             });// end of Item.find()
-
-            //response.redirect("/"+ customLogName);
-           // response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
         }
-        //else {
-          //response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
-       // }
-        //     Item.find({}, function(err, foundItems){ // Item.find() start 
-        //         //console.log(" length of found logs: " + foundLogs.length); 
-            
-        //             if( !foundLogs){ // if foundLogs is empty 
-        //               // i need to replace default items with "foundItems" , currently using logs:defaultItems 
-        //               Log.insertMany([{ WkName:customLogName , logs: foundItems}],function(err){
-      
-        //                 logNames.push(customLogName);
-      
-        //                 if( err){
-        //                   console.log(err);
-        //                 }else {
-        //                   console.log(" inserted default items into database");
-        //                 }
-                        
-        //                   });
-            
-                   
-        //             // we need to render items just created 
-        //                   response.redirect("/"+ customLogName);
-        //             }
-        //             else{
-        //               // display the existing log, that can be found in foundLogs
-
-        //               response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId  });
-        //             } 
-        //           //}
-        //       //}
-        //     }); // Item.find() end 
-         
-              
-        //  // }
+        
       })
 });
 
