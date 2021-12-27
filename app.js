@@ -102,41 +102,12 @@ app.get("/", function(require, response){
   });
 
 
-app.get("/timeout", function(require, response){
 
-  
-
-    Item.find({}, function(err, foundItems){
-
-        if( foundItems.length === 0 ){
-            Item.insertMany(defaultItems,function(err){
-
-                if( err){
-                  console.log(err);
-                }else {
-                  console.log(" inserted default items into database");
-                }
-            } );
-            // we need to render items just created 
-        response.redirect("/" + inthisRoutine);
-        } 
-        
-       // else{
-         //   response.render('index', { routineName: "logA" , workout: foundItems, OpenEditId: openValueId });
-
-        //}
-
-    })
-    
- 
-    
-});
 
 // get user data from the form and use it redirect to /customLogName 
 app.post("/newpage", function(require,response){
 
     const pageName= require.body.newpageName;
-    //inthisRoutine= pageName;
 
     response.redirect("/"+ pageName);
 });
@@ -177,10 +148,8 @@ app.get("/:customLogName", function(require,response){
               logNames.push(customLogName);
 
              }); 
-                    
-          console.log(" ( foundLogs == null ) == true ");
-                        
-
+    
+     
             response.redirect("/"+ customLogName);
             // need to give it items, 
          } 
@@ -188,8 +157,7 @@ app.get("/:customLogName", function(require,response){
         // Document match the specified query, the promise is NOT null 
         if( foundLogs != null ) {
 
-     //   console.log("this is the id of "+ inthisRoutine + " : " + foundLogs._id);
-            // find the exercises that match the id of the routine
+            // find the exercises that match the id of the routine, and store the results in foundItems 
             Item.find({routine_id: foundLogs._id}, function(err, foundItems){ // start of Item.find()
 
                   
@@ -203,10 +171,6 @@ app.get("/:customLogName", function(require,response){
 
                       }); // Log.insertMany() end 
 
-                      
-                      console.log(" ( foundLogs != null ) == true ");
-                       
-                        //response.redirect("/"+ customLogName);
                  response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId , routineID: foundLogs._id });
             });// end of Item.find()
 
