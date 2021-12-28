@@ -72,9 +72,9 @@ const blanks = [];
 const logSchema ={
   WkName: {
               type: String, 
-              required: [true, 'name required'], 
-              minlength: [2, 'name must be at least 2 characters.'],
-              maxlength: [20, 'name must be less than 20 characters.']
+              required: [true, 'name required']
+             // minlength: [2, 'name must be at least 2 characters.'],
+              //maxlength: [20, 'name must be less than 20 characters.']
           }, 
   // contains an array of 'items' = exercises, sets , reps , weight 
   logs: [itemsSchema] 
@@ -114,11 +114,25 @@ app.get("/", function(require, response){
 
 
 // get user data from the form and use it redirect to /customLogName 
-app.post("/newpage", function(require,response){
+app.post("/newpage", function(err,response){
 
-    const pageName= require.body.newpageName;
+    
+   if( err ){
+    // const pageName= require.body.newpageName;
+    // response.redirect("/"+ pageName);
+    console.log("here is the error message : " )
+    console.log(err); 
+    //response.redirect("/"); 
+   }
+   else {
+    //  console.log(err); 
+    //  response.redirect("/"); 
+     const pageName= require.body.newpageName;
+     response.redirect("/"+ pageName);
+   }
+   //response.redirect("/"+ pageName);
 
-    response.redirect("/"+ pageName);
+   response.redirect("/");
 });
 /**
  * 
