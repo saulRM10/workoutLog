@@ -43,7 +43,7 @@ const itemsSchema = {
     // need to validate the data 
     name: {
             type: String, 
-            require: [true, 'Name Required']
+            required: [true, 'Name Required']
           },
     sets: String,
     reps: String,
@@ -209,7 +209,7 @@ app.post("/createItem", function(require, response){
 
 //Need to see what routine this myObj belongs too 
   Log.findOne({_id: routineID}, function(err, foundLogs){
-if( !err){
+try{
     // insert to items collections as well 
       Item.insertMany(myobj); 
     
@@ -218,7 +218,7 @@ if( !err){
 
       foundLogs.save();
 }
-else { console.log( " this is the error: " + err ); }
+catch(err) { console.log( " this is the error: " + err ); }
       // render the new item in the routine it belongs too 
       response.redirect("/" + inthisRoutine);
   });
