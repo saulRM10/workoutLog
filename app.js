@@ -43,12 +43,22 @@ const itemsSchema = {
     // need to validate the data 
     name: {
             type: String, 
-            required: [true, 'Name Required'], 
-            minlength: [2, 'Username must be at least 2 characters.'],
-            maxlength: [20, 'Username must be less than 20 characters.']
+            required: [true, 'name required'], 
+            minlength: [2, 'name must be at least 2 characters.'],
+            maxlength: [20, 'name must be less than 20 characters.']
           },
-    sets: String,
-    reps: String,
+    sets: {
+            type: String,
+            required: [true, 'set number required'],
+            minlength: [1, 'set must be at least 1 characters.'], 
+            maxlength: [2, 'set must be at less than 2 characters.']
+          },
+    reps: {
+            type: String,
+            required: [true, 'set number required'],
+            minlength: [1, 'set must be at least 1 characters.'], 
+            maxlength: [2, 'set must be at less than 2 characters.']
+          },
     weight: Array
   };
   // 5) cerate a mongoose model based on the schema 
@@ -60,7 +70,12 @@ const blanks = [];
 
   //create a place to store multiple workout log 
 const logSchema ={
-  WkName: String,
+  WkName: {
+              type: String, 
+              required: [true, 'name required'], 
+              minlength: [2, 'name must be at least 2 characters.'],
+              maxlength: [20, 'name must be less than 20 characters.']
+          }, 
   // contains an array of 'items' = exercises, sets , reps , weight 
   logs: [itemsSchema] 
 };
