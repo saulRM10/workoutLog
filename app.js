@@ -40,7 +40,11 @@ mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true ,
 const itemsSchema = {
   // add a routine ID so ik which list of exercises belongs to what routine 
     routine_id: String, 
-    name: String,
+    // need to validate the data 
+    name: {
+            type: String, 
+            require: [true, 'Name Required']
+          },
     sets: String,
     reps: String,
     weight: Array
@@ -157,7 +161,7 @@ app.get("/:customLogName", function(require,response){
         // Document match the specified query, the promise is NOT null 
         if( foundLogs != null ) {
 
-            // find the exercises that match the id of the routine, and store the results in foundItems 
+            // find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
             Item.find({routine_id: foundLogs._id}, function(err, foundItems){ // start of Item.find()
 
                   
@@ -205,7 +209,7 @@ app.post("/createItem", function(require, response){
 
 //Need to see what routine this myObj belongs too 
   Log.findOne({_id: routineID}, function(err, foundLogs){
-
+if( !err){
     // insert to items collections as well 
       Item.insertMany(myobj); 
     
@@ -213,6 +217,8 @@ app.post("/createItem", function(require, response){
       foundLogs.logs.push(myobj);
 
       foundLogs.save();
+}
+else { console.log( " this is the error: " + err ); }
       // render the new item in the routine it belongs too 
       response.redirect("/" + inthisRoutine);
   });
