@@ -43,7 +43,9 @@ const itemsSchema = {
     // need to validate the data 
     name: {
             type: String, 
-            required: [true, 'Name Required']
+            required: [true, 'Name Required'], 
+            minlength: [2, 'Username must be at least 2 characters.'],
+            maxlength: [20, 'Username must be less than 20 characters.']
           },
     sets: String,
     reps: String,
@@ -52,21 +54,9 @@ const itemsSchema = {
   // 5) cerate a mongoose model based on the schema 
 const Item = mongoose.model("Item", itemsSchema);
 
-const defaultItemsTwo = [];
+// when a routine is created it will have zero items
+const blanks = [];
 
-const defaultItems =[];
-  // 6) create new 'documents' == default items
-
-const item1 = new Item({
-    name: "bench",
-    sets: "4",
-    reps:"8",
-    weight: [135,185,205,225]
-  });
-  
-  
-
-   defaultItems.push(item1);
 
   //create a place to store multiple workout log 
 const logSchema ={
@@ -147,7 +137,7 @@ app.get("/:customLogName", function(require,response){
      // If no documents match the specified query, the promise resolves to null
         if ( foundLogs == null){
             // need to just create it 
-             Log.insertMany([{ WkName:customLogName , logs: defaultItemsTwo }],function(err){
+             Log.insertMany([{ WkName:customLogName , logs: blanks }],function(err){
 
               logNames.push(customLogName);
 
