@@ -72,9 +72,9 @@ const blanks = [];
 const logSchema ={
   WkName: {
               type: String, 
-              required: [true, 'name required']
-             // minlength: [2, 'name must be at least 2 characters.'],
-              //maxlength: [20, 'name must be less than 20 characters.']
+              required: [true, 'name required'],
+              minlength: [2, 'name must be at least 2 characters.'],
+              maxlength: [20, 'name must be less than 20 characters.']
           }, 
   // contains an array of 'items' = exercises, sets , reps , weight 
   logs: [itemsSchema] 
@@ -97,6 +97,22 @@ const Log = mongoose.model("Log", logSchema);
 // /goHome
 app.get("/", function(require, response){
 
+
+  // get page name, find a page name with that name and send it there 
+
+  const pageName= require.body.newpageName;
+
+  Log.find({ WkName : pageName}, function(err, templogs){
+
+    if( !err){
+      response.redirect("/"+ pageName);
+    }
+    else {
+      response.redirect("/");
+    }
+  })
+
+  // if page does not exist send it to /+pagename to get created 
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
       if(!err){
@@ -114,25 +130,19 @@ app.get("/", function(require, response){
 
 
 // get user data from the form and use it redirect to /customLogName 
-app.post("/newpage", function(err,response){
+app.post("/newpage", function(require, response){
 
+  //if( !err){
+    const pageName= require.body.newpageName;
     
-   if( err ){
-    // const pageName= require.body.newpageName;
-    // response.redirect("/"+ pageName);
-    console.log("here is the error message : " )
-    console.log(err); 
-    //response.redirect("/"); 
-   }
-   else {
-    //  console.log(err); 
-    //  response.redirect("/"); 
-     const pageName= require.body.newpageName;
-     response.redirect("/"+ pageName);
-   }
-   //response.redirect("/"+ pageName);
+    response.redirect("/"+ pageName);
+ // }
+  //else {
+    response.redirect("/");
+  //}
+ 
 
-   response.redirect("/");
+   
 });
 /**
  * 
