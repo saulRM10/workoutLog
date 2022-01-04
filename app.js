@@ -353,7 +353,7 @@ app.post("/update", function(require,response){
     // name is not long enough , close menu
     else { 
 
-      openValueId = null;
+      openRoutineMenu = null;
     }
 
 response.redirect("/");
