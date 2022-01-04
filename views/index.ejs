@@ -66,11 +66,11 @@
                     <td><%= item.weight[i] %></td>
                     <% if( i ==0 ){ %>
                     
-                        <td><button formaction="/openId" type="submit" name = "editBtn" value="<%= item.name%>"> edit </button></td> 
+                        <td><button formaction="/openMenu" type="submit" name = "editBtnExr" value="<%= item.name%>"> edit </button></td> 
 
                         <% } %>
                     
-                        <% if(  OpenEditId == item.name ){ %>
+                        <% if(  OpenEdit == item.name ){ %>
                             <% if( i ==1 ){ %>
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
         
@@ -83,7 +83,7 @@
                           
                             <button formaction="/update" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
                             <button  formaction="/delete"  type="submit" name = "skip" value="<%= item._id %>"> delete </button> 
-                            <button  formaction="/close"  type="submit" name = "cancel" value="close"> cancel </button> </input> 
+                            <button  formaction="/close"  type="submit" name = "closeMenuExr" value="item>_id"> cancel </button> </input> 
                                 </form>
                             <% } %>
                             <% } %> 

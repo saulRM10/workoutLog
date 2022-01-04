@@ -85,7 +85,8 @@ const Log = mongoose.model("Log", logSchema);
  
 
   let openMenue = 0;
-  let openValueId; 
+  let openExerciseMenu;
+  let openRoutineMenu; 
 
     let logNames =[];
 
@@ -104,7 +105,7 @@ app.get("/", function(require, response){
 
       if(!err){
        
-        response.render('home',{  listofNames: logNamesHere, OpenEditId: openValueId });
+        response.render('home',{  listofNames: logNamesHere, OpenEdit: openRoutineMenu });
       }
 
     });
@@ -190,7 +191,7 @@ app.get("/:customLogName", function(require,response){
 
                       }); // Log.insertMany() end 
 
-                 response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEditId: openValueId , routineID: foundLogs._id });
+                 response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEdit: openExerciseMenu , routineID: foundLogs._id });
             });// end of Item.find()
         }
         
@@ -363,44 +364,53 @@ response.redirect("/");
 });
 
 
-app.post("/openId", function(require, response){
 
-  // i am on this item, item I want to edit ( name, reps, sets, weight)
-   openValueId = require.body.editBtn;
-   response.redirect("/" + inthisRoutine);
+app.post("/openMenu", function(require, response){
+
+  
+  // open exercise edit menu
+   openExerciseMenu = require.body.editBtnExr;
+
+   // open routine edit menu 
+   openRoutineMenu = require.body.editBtnRt; 
+
+   if ( openExerciseMenu != undefined){
+       response.redirect("/" + inthisRoutine);
+   }
+   else {
+    response.redirect("/");
+   }
+
 
 });
 
-app.post("/openIdRoutine", function(require, response){
 
-  // i am on this item, item I want to edit ( name, reps, sets, weight)
-   openValueId = require.body.editBtn;
-
-  response.redirect("/");
-
-
-});
 
 
 
 // close the 'edit' pop up  
 app.post("/close", function(require,response){
 
-  openValueId = null; 
 
+  const closeExr = require.body.closeMenuExr; 
+
+  const closeRt = require.body.closeMenuRt; 
   
-  // go to the specific page you are doing the edit;
-  response.redirect("/" + inthisRoutine);
+  if ( closeExr != undefined){
+
+    openExerciseMenu = null; 
+    response.redirect("/" + inthisRoutine);
+
+  }
+
+  else{
+    
+    openRoutineMenu = null ; 
+    response.redirect("/");
+
+  }
   
 });
-
-app.post("/closeRoutine", function(require, response){
-
-  openValueId = null; 
-
-  response.redirect("/"); // redirect home
-});
-
 
 
 app.listen(5000,function(){
