@@ -98,21 +98,7 @@ const Log = mongoose.model("Log", logSchema);
 app.get("/", function(require, response){
 
 
-  // get page name, find a page name with that name and send it there 
 
-  const pageName= require.body.newpageName;
-
-  Log.find({ WkName : pageName}, function(err, templogs){
-
-    if( !err){
-      response.redirect("/"+ pageName);
-    }
-    else {
-      response.redirect("/");
-    }
-  })
-
-  // if page does not exist send it to /+pagename to get created 
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
       if(!err){
@@ -131,17 +117,16 @@ app.get("/", function(require, response){
 
 // get user data from the form and use it redirect to /customLogName 
 app.post("/newpage", function(require, response){
-
-  //if( !err){
+ 
     const pageName= require.body.newpageName;
     
-    response.redirect("/"+ pageName);
- // }
-  //else {
+  if ( pageName.length > 2){
+    response.redirect("/" + pageName);
+  }
+  else {
     response.redirect("/");
-  //}
- 
-
+  }
+   
    
 });
 /**
