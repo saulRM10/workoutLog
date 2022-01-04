@@ -7,6 +7,8 @@ const express = require("express");
 const bodyParcer = require("body-parser");
 const { setServers } = require("dns");
 
+
+
 const mongoose = require("mongoose");
 const { redirect } = require("statuses");
 const { all, timeout } = require("async");
@@ -120,13 +122,13 @@ app.post("/newpage", function(require, response){
  
     const pageName= require.body.newpageName;
     
-  if ( pageName.length > 2){
-    response.redirect("/" + pageName);
-  }
-  else {
-    response.redirect("/");
-  }
-   
+      if ( pageName.length > 2){
+        response.redirect("/" + pageName);
+      }
+      else {
+        response.redirect("/");
+      }
+      
    
 });
 /**
