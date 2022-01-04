@@ -320,6 +320,10 @@ app.post("/updateRoutineName", function(require,response){
 
     const newRoutineName = require.body.updateRoutineName;
     const updateItem = require.body.needsUpdate;
+
+    // if the new name is more than 2 characters  
+    if( newRoutineName.length > 2){
+
    
     var updatedName = {
                           $set:
@@ -335,6 +339,13 @@ app.post("/updateRoutineName", function(require,response){
           }
 
       });
+
+    }
+    // name is not long enough , close menu
+    else { 
+
+      openValueId = null;
+    }
 
 response.redirect("/");
 
