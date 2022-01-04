@@ -18,7 +18,7 @@
 
 
     <!-- search for routines  -->
-        
+
 
     <!-- ____________________ -->
     <% listofNames.forEach(function(item){ %> 
@@ -46,7 +46,7 @@
                                    
                           
                             <button formaction="/updateRoutineName" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
-                            <button  formaction="/deleteRoutine"  type="submit" name = "deltRotn" value="<%= item._id %>"> delete </button> 
+                            <button  formaction="/delete"  type="submit" name = "deltRotn" value="<%= item._id %>"> delete </button> 
                             <button  formaction="/closeRoutine"  type="submit" name = "cancel" value="<%= item._id %>"> cancel </button> </input> 
                                 </form>
                            

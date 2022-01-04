@@ -244,37 +244,42 @@ catch(err) { console.log( " this is the error: " + err ); }
 
 
 
-app.post("/deleteRoutine", function(require, response){
+app.post("/delete", function(require, response){
 
+
+  // routine id 
   const dtRoutine = require.body.deltRotn;
-  
+  // item id 
+  const noMore = require.body.skip;
 
+  if ( dtRoutine != undefined){ // if not undefined then you want to delete a routine 
     Log.deleteOne({_id: dtRoutine}, function(err){
 
       if( !err){
-        console.log("log has been deleted successfully");
+        console.log("routine deleted successfully");
     }
     // deleted the item, not go back to root and render what we do have left
     response.redirect("/");
     });
-});
 
-
-/// used to delete items of the list
-app.post("/delete", function(require, response ){
-
-    const noMore = require.body.skip;
-      console.log("this is the item id of the deleted item: " + noMore);
-      Item.deleteOne({_id:noMore}, function(err){
+  }
+  else {
+    // delete item 
+    Item.deleteOne({_id:noMore}, function(err){
 
         
-        if(!err){
-          console.log("delete this item with an ID of : "+noMore);
-        }
-      });
+      if(!err){
+        console.log("exercise deleted successfully" );
+      }
+
       response.redirect("/" + inthisRoutine);
-   // }); 
+
+    });
+  }
 });
+
+
+
 
 // create a route to update item 
 app.post("/update", function(require,response){
