@@ -84,13 +84,13 @@ const logSchema ={
 const Log = mongoose.model("Log", logSchema);
  
 
-  let openMenue = 0;
+  
   let openExerciseMenu;
   let openRoutineMenu; 
 
     let logNames =[];
 
-    let newItems = [];
+  
 
     // create a global variable to know what routine we are on;
     let inthisRoutine = 'home' ; 
@@ -219,7 +219,7 @@ app.post("/createItem", function(require, response){
 
     // get number of sets and then give them the input space so we can collect the data to then display
         // create the 'object'
-   const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+    const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
 
 
 
@@ -411,6 +411,7 @@ app.post("/close", function(require,response){
   }
   
 });
+
 
 
 app.listen(5000,function(){
