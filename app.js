@@ -7,8 +7,6 @@ const express = require("express");
 const bodyParcer = require("body-parser");
 const { setServers } = require("dns");
 
-
-
 const mongoose = require("mongoose");
 const { redirect } = require("statuses");
 const { all, timeout } = require("async");
@@ -95,6 +93,7 @@ const Log = mongoose.model("Log", logSchema);
 
     // create a global variable to know what routine we are on;
     let inthisRoutine = 'home' ; 
+
 // go home and render home page 
 // /goHome
 app.get("/", function(require, response){
