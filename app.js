@@ -284,9 +284,16 @@ app.post("/delete", function(require, response){
 // create a route to update item 
 app.post("/update", function(require,response){
 
-    
+    // exercise 
     const updateItem = require.body.needsUpdate;
     
+    
+    // routine 
+    const newRoutineName = require.body.updateRoutineName;
+    const updateRoutine = require.body.updateRoutineID;
+    
+    if ( updateItem != undefined){// if updateItem is not undefined then user wants to update an exercise
+      
     let newName = require.body.updateName;
     let newSetNum = require.body.updateSetNum;
     let newRepNum = require.body.updateRepNum;
@@ -317,15 +324,10 @@ app.post("/update", function(require,response){
         
     response.redirect("/" + inthisRoutine );
 
-  
+  } // end of if 
 
+  else {
     
-});
-
-app.post("/updateRoutineName", function(require,response){
-
-    const newRoutineName = require.body.updateRoutineName;
-    const updateItem = require.body.needsUpdate;
 
     // if the new name is more than 2 characters  
     if( newRoutineName.length > 2){
@@ -336,7 +338,7 @@ app.post("/updateRoutineName", function(require,response){
                               {
                                 WkName: newRoutineName
                               }};
-    Log.updateOne({ _id : updateItem}, updatedName, function(err, response) {
+    Log.updateOne({ _id : updateRoutine}, updatedName, function(err, response) {
           
           if( !err){
 
@@ -355,9 +357,12 @@ app.post("/updateRoutineName", function(require,response){
 
 response.redirect("/");
 
+  }// end of else 
+
+    
 });
 
-// gets 
+
 app.post("/openId", function(require, response){
 
   // i am on this item, item I want to edit ( name, reps, sets, weight)

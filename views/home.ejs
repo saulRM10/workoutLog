@@ -21,41 +21,35 @@
 
 
     <!-- ____________________ -->
-    <% listofNames.forEach(function(item){ %> 
-        <h3> <%= item.WkName %></h3>
+    <% listofNames.forEach(function(routine){ %> 
+        <h3> <%= routine.WkName %></h3>
 
-        
-        <!-- <h2> <%= item._id %></h2> -->
-        <form action="/<%= item.WkName %>" method="get">
+        <form action="/<%= routine.WkName %>" method="get">
             <button  type="submit" name="goHere"> open </button>
         </form>
 
         <!-- need to make a edit/menu option  -->
         <form action="/delete" method="post">
-            <td><button formaction="/openIdRoutine" type="submit" name = "editBtn" value="<%= item.WkName %>"> edit </button></td> 
+            <td><button formaction="/openIdRoutine" type="submit" name = "editBtn" value="<%= routine.WkName %>"> edit </button></td> 
 
         </form>
     
-                <% if(  OpenEditId == item.WkName ){ %>
+                <% if(  OpenEditId == routine.WkName ){ %>
                        
-                                <form style="margin: auto; text-align: center;" action="/updateRoutineName" method="post">
+                                <form style="margin: auto; text-align: center;" action="/update" method="post">
         
                                    
-                                <!-- <h3 style=" text-align: center;"> Edit : <%= item.WkName %> </h3> <br> -->
-                                    <input type="text" name="updateRoutineName" placeholder="<%= item.WkName %>" autocomplete="off">
+                
+                                    <input type="text" name="updateRoutineName" placeholder="<%= routine.WkName %>" autocomplete="off">
                                    
                           
-                            <button formaction="/updateRoutineName" type="submit" name = "needsUpdate" value="<%= item._id %>"> save</button> 
-                            <button  formaction="/delete"  type="submit" name = "deltRotn" value="<%= item._id %>"> delete </button> 
-                            <button  formaction="/closeRoutine"  type="submit" name = "cancel" value="<%= item._id %>"> cancel </button> </input> 
+                            <button formaction="/update" type="submit" name = "updateRoutineID" value="<%= routine._id %>"> save</button> 
+                            <button  formaction="/delete"  type="submit" name = "deltRotn" value="<%= routine._id %>"> delete </button> 
+                            <button  formaction="/closeRoutine"  type="submit" name = "cancel" value="<%= routine._id %>"> cancel </button> </input> 
                                 </form>
                            
                             <% } %>
-        <!-- <form action="/deleteRoutine" method="post">
-            <button  type="submit" name="deltRotn" value="<%= item._id %>"> delete </button>
-           
-
-        </form> -->
+       
         <% }) %>
    
 
