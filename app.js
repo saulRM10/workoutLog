@@ -20,7 +20,8 @@ app.set('view engine', 'ejs');
 // use body parcer 
 app.use(bodyParcer.urlencoded({extended:true }));
 
-//app.use(express.static("public"));// use these static elements (css, imgs etc )
+app.use(express.static("public"));// use these static elements (css, imgs etc )
+
 // need an array of items to store the to list items 
 
 let listofExr =[];
