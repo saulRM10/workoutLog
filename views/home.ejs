@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link rel="shortcut icon" type="image/ico" href="mages/favicon (1).ico">
+</head>
+
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+<body>
+    <h1> workout history </h1>
+
+    <form action="/newpage" method="post">
+        
+        <input type="text" name="newpageName" placeholder="new routine" autocomplete="off">
+        <button type="submit" name="newpageBtn"  > create +</button>
+        
+    </form>
+
+
+    <!-- search for routines  -->
+
+
+    <!-- ____________________ -->
+    <% listofNames.forEach(function(routine){ %> 
+        <h3> <%= routine.WkName %></h3>
+
+        <form action="/<%= routine.WkName %>" method="get">
+            <button  type="submit" name="goHere"> open </button>
+        </form>
+
+        <!-- need to make a edit/menu option  -->
+        <form action="/delete" method="post">
+            <td><button formaction="/openMenu" type="submit" name = "editBtnRt" value="<%= routine.WkName %>"> edit </button></td> 
+
+        </form>
+    
+                <% if(  OpenEdit == routine.WkName ){ %>
+                       
+                                <form style="margin: auto; text-align: center;" action="/update" method="post">
+        
+                                   
+                
+                                    <input type="text" name="updateRoutineName" placeholder="<%= routine.WkName %>" autocomplete="off">
+                                   
+                          
+                            <button formaction="/update" type="submit" name = "updateRoutineID" value="<%= routine._id %>"> save</button> 
+                            <button  formaction="/delete"  type="submit" name = "deltRotn" value="<%= routine._id %>"> delete </button> 
+                            <button  formaction="/close"  type="submit" name = "closeMenuRt" value="<%= routine._id %>"> cancel </button> </input> 
+                                </form>
+                           
+                            <% } %>
+       
+        <% }) %>
+   
+
+       
+
+</body>
+<!-- <script src="main.js"></script> -->
+</html>
