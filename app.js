@@ -5,12 +5,12 @@
 
 const express = require("express");
 const bodyParcer = require("body-parser");
-const { setServers } = require("dns");
+//const { setServers } = require("dns");
 
 const mongoose = require("mongoose");
-const { redirect } = require("statuses");
-const { all, timeout } = require("async");
-const { homedir } = require("os");
+//const { redirect } = require("statuses");
+//const { all, timeout } = require("async");
+//const { homedir } = require("os");
 
 const app = express();
 
