@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParcer.urlencoded({extended:true }));
 
 //app.use(express.static("public"));// use these static elements (css, imgs etc )
-app.use(express.static('public')); // not going to use static files atm
+//app.use(express.static('public')); // not going to use static files atm
 // need an array of items to store the to list items 
 
 let listofExr =[];
@@ -73,9 +73,9 @@ const blanks = [];
 const logSchema ={
   WkName: {
               type: String, 
-              required: [true, 'name required'],
-              minlength: [2, 'name must be at least 2 characters.'],
-              maxlength: [20, 'name must be less than 20 characters.']
+              // required: [true, 'name required'],
+              // minlength: [2, 'name must be at least 2 characters.'],
+              // maxlength: [20, 'name must be less than 20 characters.']
           }, 
   // contains an array of 'items' = exercises, sets , reps , weight 
   logs: [itemsSchema] 
@@ -91,7 +91,6 @@ const Log = mongoose.model("Log", logSchema);
 
     let logNames =[];
 
-  
 
     // create a global variable to know what routine we are on;
     let inthisRoutine = 'home' ; 
@@ -103,6 +102,8 @@ app.get("/", function(require, response){
 
 
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
+
+      //console.log(logNamesHere); 
 
       if(!err){
        
@@ -122,14 +123,18 @@ app.get("/", function(require, response){
 app.post("/newpage", function(require, response){
  
     const pageName= require.body.newpageName;
-    
-      if ( pageName.length > 2){
+
+    // console.log("print favecon : " + pageName);
+    //   if ( pageName.length > 2){
+    //     response.redirect("/" + pageName);
+    //   }
+    //   else {
+    //     response.redirect("/");
+    //   }
+
+
         response.redirect("/" + pageName);
-      }
-      else {
-        response.redirect("/");
-      }
-      
+
    
 });
 /**
@@ -156,6 +161,7 @@ app.get("/:customLogName", function(require,response){
 
     // use this variable, to know what log we are in at all times. 
       inthisRoutine = customLogName;
+
       // need to check if a 'log' of the same name already exist
        
       Log.findOne({ WkName:customLogName}, function(err , foundLogs){
