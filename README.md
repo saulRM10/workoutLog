@@ -17,4 +17,5 @@ With workoutLog you can track your workouts/routines:
 
 ![screen-gif](./demoWL.gif)
 
-## Insatall Instructions 
+## Install 
+
