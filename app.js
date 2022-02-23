@@ -40,7 +40,9 @@ mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true ,
 
 const itemsSchema = {
   // add a routine ID so ik which list of exercises belongs to what routine 
-    routine_id: String, 
+    routine_id: {
+      type: String
+    }, 
     // need to validate the data 
     name: {
             type: String, 
