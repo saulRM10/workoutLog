@@ -15,6 +15,6 @@ With workoutLog you can track your workouts/routines:
 3. Repeat ‘Step 2’ until you finish your workout/routine. 
 
 
-![screen-gif]()
+![screen-gif](./demoWL.gif)
 
 ## Insatall Instructions 
