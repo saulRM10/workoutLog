@@ -8,7 +8,7 @@ When looking to maximize your training, what better way than with workoutLog. Th
 
 ## Features
 
-With workoutLog you can track your workouts:
+With workoutLog you can track your workouts/routines:
 
 1. create a workout/ routine. 
 2. create an exercise, provide the name of the exercise, number of sets, number of reps and amount of weight used. 
