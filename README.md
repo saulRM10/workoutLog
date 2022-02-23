@@ -10,9 +10,9 @@ When looking to maximize your training, what better way than with workoutLog. Th
 
 With workoutLog you can track your workouts:
 
-Step 1. create a workout/ routine. 
-Step 2. create an exercise, provide the name of the exercise, number of sets, number of reps and amount of weight used. 
-Step 3. Repeat ‘Step 2’ until you finish your workout/routine. 
+1. create a workout/ routine. 
+2. create an exercise, provide the name of the exercise, number of sets, number of reps and amount of weight used. 
+3. Repeat ‘Step 2’ until you finish your workout/routine. 
 
 
 ## Insatall Instructions 
