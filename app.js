@@ -40,9 +40,7 @@ mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true ,
 
 const itemsSchema = {
   // add a routine ID so ik which list of exercises belongs to what routine 
-    routine_id: {
-      type: String
-    }, 
+    routine_id: String,  
     // need to validate the data 
     name: {
             type: String, 
@@ -95,7 +93,7 @@ const Log = mongoose.model("Log", logSchema);
 
 
     // create a global variable to know what routine we are on;
-    let inthisRoutine = 'home' ; 
+    let inthisRoutine ; 
 
 // go home and render home page 
 // /goHome
@@ -164,6 +162,8 @@ app.get("/:customLogName", function(require,response){
     // use this variable, to know what log we are in at all times. 
       inthisRoutine = customLogName;
 
+      console.log("inthisRoutine = customLogName => " + inthisRoutine + " = " + customLogName);
+
       // need to check if a 'log' of the same name already exist
        
       Log.findOne({ WkName:customLogName}, function(err , foundLogs){
@@ -174,8 +174,9 @@ app.get("/:customLogName", function(require,response){
             // need to just create it 
              Log.insertMany([{ WkName:customLogName , logs: blanks }],function(err){
 
+              console.log(" I will now create your new 'log' named : " + customLogName + " because it does not exist")
               logNames.push(customLogName);
-
+              console.log(" and then insert logsNames to : " + customLogName);
              }); 
     
      
@@ -245,6 +246,8 @@ try{
 }
 catch(err) { console.log( " this is the error: " + err ); }
       // render the new item in the routine it belongs too 
+
+      console.log(' i belong here : ' + inthisRoutine);
       response.redirect("/" + inthisRoutine);
   });
 });
