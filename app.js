@@ -93,7 +93,10 @@ const Log = mongoose.model("Log", logSchema);
 
 
     // create a global variable to know what routine we are on;
-    let inthisRoutine ; 
+    let inthisRoutine = " " ; 
+
+
+
 
 // go home and render home page 
 // /goHome
@@ -206,6 +209,8 @@ app.get("/:customLogName", function(require,response){
         }
         
       })
+
+      inthisRoutine = ''; 
 });
 
 
@@ -372,7 +377,7 @@ response.redirect("/");
 
   }// end of else 
 
-    
+    inthisRoutine = " ";
 });
 
 
@@ -383,11 +388,38 @@ app.post("/openMenu", function(require, response){
   // open exercise edit menu
    openExerciseMenu = require.body.editBtnExr;
 
+   
+
+   console.log(" edit this exercise : " + openExerciseMenu);
+   
+
    // open routine edit menu 
    openRoutineMenu = require.body.editBtnRt; 
 
+   console.log(" i am sending back routineName : " + openExerciseMenu)
    if ( openExerciseMenu != undefined){
-       response.redirect("/" + inthisRoutine);
+     // got the routine_id, so now I know what routine to redirect too instead of using a global variable 
+     //,{ WkName:1},{_id: 0},
+     // Log.findOne({ WkName:customLogName}, function(err , foundLogs){
+    //  Log.find({ _id: openExerciseMenu },{_id: 0 , WkName: 1} ,function(err , foundRT ){
+
+    //       console.log("foundRT : " + foundRT);
+    //       // get the length 
+          
+
+    //       // foundRT is the string { WkName: ' ' }
+    //       // need to remove all that and just keep the name; 
+    //       if( err){
+    //         console.log(err);
+    //       }
+
+    //       else {
+    //         response.redirect("/" + foundRT);
+    //       }
+    //   });
+
+     
+       response.redirect("/" + openExerciseMenu);
    }
    else {
     response.redirect("/");
