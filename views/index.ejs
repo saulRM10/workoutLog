@@ -68,11 +68,11 @@
                     <% if( i ==0 ){ %>
                     
                         <!-- I will send back the id of the item instead od name. In order to connect it back to the original routine it comes from  -->
-                        <td><button formaction="/openMenu" type="submit" name = "editBtnExr" value="<%= routineName %>"> edit </button></td> 
+                        <td><button formaction="/openMenu" type="submit" name = "editBtnExr" value="<%= item.name %>"> edit </button></td> 
 
                         <% } %>
                     
-                        <% if(  OpenEdit == routineName ){ %>
+                        <% if(  OpenEdit == item.name ){ %>
                             <% if( i ==1 ){ %>
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
         

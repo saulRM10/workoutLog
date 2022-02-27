@@ -94,15 +94,18 @@ const Log = mongoose.model("Log", logSchema);
 
     // create a global variable to know what routine we are on;
     let inthisRoutine = " " ; 
+    //console.log(" in this routine at the very start : " + inthisRoutine);
 
-
+// taken straight from when the new routine is cerated 
+  const GlobalRtLocationATM = "/"; 
 
 
 // go home and render home page 
 // /goHome
 app.get("/", function(require, response){
 
-
+  inthisRoutine = " ";
+  console.log(" in this routine at /  : " + inthisRoutine);
 
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
@@ -124,18 +127,20 @@ app.get("/", function(require, response){
 
 // get user data from the form and use it redirect to /customLogName 
 app.post("/newpage", function(require, response){
- 
-    const pageName= require.body.newpageName;
 
-    // console.log("print favecon : " + pageName);
-    //   if ( pageName.length > 2){
-    //     response.redirect("/" + pageName);
-    //   }
-    //   else {
-    //     response.redirect("/");
-    //   }
+    inthisRoutine = ""; 
+   // const pageName= require.body.newpageName;
+   const pageName= require.body.newpageName;
+
+   //GlobalRtLocationATM = pageName;
+
+    console.log(" global  page name is : " + GlobalRtLocationATM);
+    inthisRoutine = pageName; 
 
 
+    console.log(" inthisRoutine = pageName =>  "+ inthisRoutine + " = " + pageName);
+
+  
         response.redirect("/" + pageName);
 
    
@@ -160,30 +165,40 @@ app.post("/newpage", function(require, response){
 // create new workout log, named whatever you want
 app.get("/:customLogName", function(require,response){
     
-    const customLogName = require.params.customLogName;
+  
+     customLogName = require.params.customLogName;
+   
+    console.log(" customLogName when created with .params = " + customLogName);
+
+       // customLogName = inthisRoutine; 
+    
+  //  const customLogName = require.params.newpageName;
+  
 
     // use this variable, to know what log we are in at all times. 
       inthisRoutine = customLogName;
-
-      console.log("inthisRoutine = customLogName => " + inthisRoutine + " = " + customLogName);
+     // inthisRoutine = require.body.newpageName;
+      //console.log(" customLogName when set equal too inthisRoutine  = " + inthisRoutine);
 
       // need to check if a 'log' of the same name already exist
-       
-      Log.findOne({ WkName:customLogName}, function(err , foundLogs){
-        
+    if( customLogName != 'favicon.ico'){ // big if for favicon.ico 
+     // Log.findOne({ WkName:customLogName}, function(err , foundLogs){
+      Log.findOne({ WkName:inthisRoutine}, function(err , foundLogs){
           
      // If no documents match the specified query, the promise resolves to null
         if ( foundLogs == null){
             // need to just create it 
-             Log.insertMany([{ WkName:customLogName , logs: blanks }],function(err){
-
-              console.log(" I will now create your new 'log' named : " + customLogName + " because it does not exist")
-              logNames.push(customLogName);
-              console.log(" and then insert logsNames to : " + customLogName);
+             //Log.insertMany([{ WkName:customLogName , logs: blanks }],function(err){
+              Log.insertMany([{ WkName:inthisRoutine , logs: blanks }],function(err){
+              
+              //logNames.push(customLogName);
+              logNames.push(inthisRoutine);
+              
              }); 
     
      
-            response.redirect("/"+ customLogName);
+           // response.redirect("/"+ customLogName);
+           response.redirect("/"+ inthisRoutine);
             // need to give it items, 
          } 
 
@@ -200,7 +215,8 @@ app.get("/:customLogName", function(require,response){
                                             logs: foundItems
                                           }
                       };
-                    Log.updateOne({ WkName:customLogName }, updateLogs , function(err){ // Log.insertMany() start 
+                    //Log.updateOne({ WkName:customLogName }, updateLogs , function(err){ // Log.insertMany() start 
+                    Log.updateOne({ WkName:inthisRoutine }, updateLogs , function(err){ // Log.insertMany() start 
 
                       }); // Log.insertMany() end 
 
@@ -209,8 +225,9 @@ app.get("/:customLogName", function(require,response){
         }
         
       })
+          }// end of 'if' for favicon.ico
 
-      inthisRoutine = ''; 
+      
 });
 
 
@@ -252,7 +269,7 @@ try{
 catch(err) { console.log( " this is the error: " + err ); }
       // render the new item in the routine it belongs too 
 
-      console.log(' i belong here : ' + inthisRoutine);
+     
       response.redirect("/" + inthisRoutine);
   });
 });
@@ -390,36 +407,15 @@ app.post("/openMenu", function(require, response){
 
    
 
-   console.log(" edit this exercise : " + openExerciseMenu);
    
 
    // open routine edit menu 
    openRoutineMenu = require.body.editBtnRt; 
 
-   console.log(" i am sending back routineName : " + openExerciseMenu)
+   console.log(" i am in  : " + inthisRoutine);
    if ( openExerciseMenu != undefined){
-     // got the routine_id, so now I know what routine to redirect too instead of using a global variable 
-     //,{ WkName:1},{_id: 0},
-     // Log.findOne({ WkName:customLogName}, function(err , foundLogs){
-    //  Log.find({ _id: openExerciseMenu },{_id: 0 , WkName: 1} ,function(err , foundRT ){
-
-    //       console.log("foundRT : " + foundRT);
-    //       // get the length 
-          
-
-    //       // foundRT is the string { WkName: ' ' }
-    //       // need to remove all that and just keep the name; 
-    //       if( err){
-    //         console.log(err);
-    //       }
-
-    //       else {
-    //         response.redirect("/" + foundRT);
-    //       }
-    //   });
-
-     
-       response.redirect("/" + openExerciseMenu);
+    
+       response.redirect("/" + inthisRoutine);
    }
    else {
     response.redirect("/");
