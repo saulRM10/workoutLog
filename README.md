@@ -1,4 +1,4 @@
-# wrokoutLog
+# workoutLog
 
 > "What gets measured gets managed" - Drucker
 
