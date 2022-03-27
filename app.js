@@ -8,10 +8,8 @@ const bodyParcer = require("body-parser");
 //const { setServers } = require("dns");
 
 const mongoose = require("mongoose");
-//const { redirect } = require("statuses");
-//const { all, timeout } = require("async");
-//const { homedir } = require("os");
-
+// import a querystring tool 
+const querystring = require('querystring'); 
 const app = express();
 
 // use ejs 
@@ -34,7 +32,8 @@ let sets = 0;
 // 1) install mongoose -> npm i mongoose 
 // 2) require mongoose 
 // 3) connect to mongo
-mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true , useUnifiedTopology: true});
+//mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true , useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/ExerciseDB?retryWrites=true&w=majority" , {useNewUrlParser: true , useUnifiedTopology: true}); 
 
 // 4) create a database schema 
 
@@ -98,7 +97,11 @@ const Log = mongoose.model("Log", logSchema);
 
 // taken straight from when the new routine is cerated 
   const GlobalRtLocationATM = "/"; 
-
+// current routine i want to be at, the routine id 
+//const {_id : routineID } = Log.find({}); 
+//var routineID; 
+// a new var to keep track of the name of the routine, assuming program will now allow duplicates 
+let currentRoutineName ='' ; // start at empty 
 
 // go home and render home page 
 // /goHome
@@ -145,6 +148,78 @@ app.post("/newpage", function(require, response){
 
    
 });
+
+app.post("/newpageTest", function(req, res){
+
+ const pageName= req.body.newpageName;
+
+const newRoutine =  {
+  WkName: pageName, 
+  logs: blanks
+}; 
+ // need to insert new routine into Log 
+ Log.insertMany(newRoutine, function( err){
+   if( !err){
+     console.log("new routine created"); 
+     // insert to array that gets all the names of routines created 
+     logNames.push(pageName); 
+   }
+   // before i redirect i want to keep track what routine I need by keeping track of the routine id 
+   
+      // I will attemtp pass in the routineID as a query in url 
+    Log.find({WkName: pageName}, function( err, newRoutine){
+      // get the id of the routine 
+      console.log('routine id: ' + newRoutine[0]._id); 
+
+      // redirect with updated query in url 
+       var queryString =  encodeURIComponent(newRoutine[0]._id); 
+
+        res.redirect('/displayRoutine/?routineID='+queryString); 
+
+    }) ; 
+
+ })
+
+ 
+ //console.log(req.body.newpageName); 
+});
+
+// when a routine is created, instead of creating a new route 
+// send to a route '/displayRoutine' and render and ejs file 
+
+app.get('/displayRoutine', function( req, res){
+  
+  const RoutineID = req.query.routineID; 
+
+  
+    Log.find({_id : RoutineID}, function( err, foundRoutine){
+
+
+     // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
+     
+     //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
+         Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
+            
+                  var updateLogs = {
+                              $set:
+                              {
+                                logs: foundExercises
+                              }
+           };
+       //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
+          Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
+                  if( err ){
+                    console.log(err); 
+                  }
+            }); //  updateOne() end 
+
+          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises}); 
+        
+    }); 
+
+
+    }); 
+}); 
 /**
  * 
  * log.find() // need to find a specific log, given the name WkName. Which returns a cursor with the results in 'foundLogs' 

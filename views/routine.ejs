@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routine</title>
+</head>
+<body>
+
+    <% routine.forEach(function(rt){ %> 
+    <h1> <%= rt.WkName %></h1>
+    <h1> <%= rt._id %></h1>
+
+    <%})%>
+
+
+
+    <form action="/CREATE" method="post">
+    
+        <input type="text " name="newExr" placeholder="New Exercise" autocomplete="off"> 
+
+        <input type="text " name="setNum" placeholder="set #" autocomplete="off"> 
+
+        <input type="text " name="repsNum" placeholder="rep #" autocomplete="off"> 
+
+        <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
+
+        <button  type="submit" name="button" value="<%= routine._id %>">submit</button>
+
+
+    </form>
+</body>
+</html>
