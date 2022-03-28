@@ -12,6 +12,7 @@
     "body-parser": "^1.19.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "mongodb": "^4.4.1",
     "mongoose": "^6.0.12",
     "popups": "^1.1.3"
   }
