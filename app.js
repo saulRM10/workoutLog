@@ -89,6 +89,8 @@ const logSchema ={
 // create a mongoose model based on the second schema 
 const Log = mongoose.model("Log", logSchema);
  
+// adding a text index to be able to have user search up routines 
+Log.createIndexes({'WkName':"text"}); 
 
   
   let openExerciseMenu;
@@ -554,7 +556,18 @@ app.post("/close", function(require,response){
   
 });
 
+// search 
+app.post('/search', function(req,res){
+    const SearchString = req.body.searchString; 
+    console.log(SearchString); 
 
+ const results = Log.find({WkName:{$regex: 'test29'}});
+ //.exec(function(err, searchResults){
+ // res.render(searchResults); 
+ console.log(results);
+//});
+   
+}); 
 
 app.listen(5000,function(){
     console.log("connected to port 5000");
