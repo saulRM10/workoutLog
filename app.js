@@ -424,9 +424,6 @@ app.post("/update", function(req,res){
     // exercise 
     const updateItem = req.body.needsUpdate;
 
-    console.log('item that needs updating: '+ updateItem); 
-    
-    
     // routine 
     const newRoutineName = req.body.updateRoutineName;
     const updateRoutine = req.body.updateRoutineID;
@@ -499,11 +496,10 @@ app.post("/update", function(req,res){
       openRoutineMenu = null;
     }
 
-response.redirect("/");
+        res.redirect("/");
 
   }// end of else 
 
-    inthisRoutine = " ";
 });
 
 
