@@ -28,7 +28,8 @@ let listofExr =[];
 // number of sets 
 let sets = 0;
 
-
+// atempt to fixing typeError, says the id i return from /createItem is a string and can not use it 
+var ObjectId = require('mongodb').ObjectId;
 // lets use a database
 // 1) install mongoose -> npm i mongoose 
 // 2) require mongoose 
@@ -40,7 +41,8 @@ mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/Exe
 
 const itemsSchema = {
   // add a routine ID so ik which list of exercises belongs to what routine 
-    routine_id: String,  
+    routine_id: mongoose.ObjectId,
+    // instead of string   
     // need to validate the data 
     name: {
             type: String, 
@@ -71,6 +73,7 @@ const blanks = [];
 
   //create a place to store multiple workout log 
 const logSchema ={
+
   WkName: {
               type: String, 
               // required: [true, 'name required'],
@@ -161,7 +164,7 @@ const newRoutine =  {
  // need to insert new routine into Log 
  Log.insertMany(newRoutine, function( err){
    if( !err){
-     console.log("new routine created"); 
+     //console.log("new routine created"); 
      // insert to array that gets all the names of routines created 
      logNames.push(pageName); 
    }
@@ -170,35 +173,99 @@ const newRoutine =  {
       // I will attempt pass in the routineID as a query in url 
     Log.find({WkName: pageName}, function( err, newRoutine){
       // get the id of the routine 
-      console.log('routine id: ' + newRoutine[0]._id); 
+     // console.log('routine id: ' + newRoutine[0]._id); 
 
       // redirect with updated query in url 
-       var queryString =  encodeURIComponent(newRoutine[0]._id); 
+      // var queryString =  encodeURIComponent(newRoutine[0]._id); 
 
-        res.redirect('/displayRoutine/?routineID='+queryString); 
-
+        //res.redirect('/displayRoutine/?routineID='+queryString); 
+   
+        res.redirect('/displayRoutine/?routineID='+newRoutine[0]._id); 
     }) ; 
 
  })
-
  
- //console.log(req.body.newpageName); 
 });
+
+// moving my route on top of hte route that gets the query string aka /displayRoutine 
+app.post("/createItem", function(req, res){
+
+  let exrName = req.body.newExr;
+
+  let NumSet = req.body.setNum;
+
+
+  let NumReps = req.body.repsNum;
+
+  let wght = req.body.weight;
+
+  const routineID = req.body.idBTN;
+  // create an array of weight to store the weight 
+   let weightDatastring =[];
+   weightDatastring = wght.split(',');
+
+  // get number of sets and then give them the input space so we can collect the data to then display
+      // create the 'object'
+  const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+
+
+// find where this 'exercise' == myobj belongs and inset it 
+
+//Need to see what routine this myObj belongs too 
+Log.find({_id: routineID}, function(err, foundRoutine){
+
+if(!err){
+      // now need to insert to the logs field
+  foundRoutine.logs.push(myobj); 
+
+  // need to inset into item collections as well 
+  Item.insertMany(myobj);
+
+  //var queryString =  encodeURIComponent(foundRoutine[0]._id); 
+
+   //res.redirect('/displayRoutine/?routineID='+queryString);
+
+   //res.redirect('/displayRoutine/:'+foundRoutine[0]._id);
+   
+   // before we redirect I will check if id is valid id format 
+// res.redirect('/displayRoutine/?routineID='+newRoutine[0]._id); 
+   res.redirect('/displayTEST/?routineID='+routineID.trim());
+}
+else{ console.log(err); }
+
+});
+// //try{
+//     // insert to items collections as well 
+//       Item.insertMany(myobj); 
+  
+//     // tap in to found logs, tap in to items, push myobj into array of items (items = exercise + sets + reps + weight ) 
+//       foundLogs.logs.push(myobj);
+
+//       foundLogs.save();
+//       var queryString =  encodeURIComponent(routineID); 
+
+//       res.redirect('/displayRoutine/?routineID='+queryString); 
+// //}
+// //catch(err) { console.log( " this is the error: " + err ); }
+//       // render the new item in the routine it belongs too  
+
+//   });
+});
+
+
 
 // when a routine is created, instead of creating a new route 
 // send to a route '/displayRoutine' and render and ejs file 
-
+//app.get("/:customLogName", function(require,response){
+//app.get('/displayRoutine/:routineID', function( req, res){
+  //
 app.get('/displayRoutine', function( req, res){
+ 
+    const RoutineID = req.query.routineID; 
   
-  const RoutineID = req.query.routineID; 
-  // trim id from white space 
-  RoutineID.trim(); 
-  
-  //console.log(mongoose.Types.ObjectId.isValid(RoutineID));
-  //console.log('id i get from query string '+  RoutineID); 
-    Log.find({_id: mongoose.Types.ObjectId(RoutineID)}, function( err, foundRoutine){
+    Log.find( {_id: RoutineID.trim()}, function( err, foundRoutine){
 
-
+       // console.log('this is found routine : '+foundRoutine); 
      // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
      
      //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
@@ -226,6 +293,46 @@ app.get('/displayRoutine', function( req, res){
 
 
     }); 
+
+ 
+}); 
+
+app.get('/displayTEST', function( req, res){
+ 
+  const RoutineID = req.query.routineID; 
+
+  Log.find( {_id: mongoose.Types.ObjectId(RoutineID)}, function( err, foundRoutine){
+
+     // console.log('this is found routine : '+foundRoutine); 
+   // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
+   
+   //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
+       Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
+
+        //console.log('found exercises: ' + foundExercises); 
+       
+        //}
+                var updateLogs = {
+                            $set:
+                            {
+                              logs: foundExercises
+                            }
+         };
+     //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
+        Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
+                if( err ){
+                  console.log(err); 
+                }
+          }); //  updateOne() end 
+
+        res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
+        
+  }); 
+
+
+  }); 
+
+
 }); 
 /**
  * 
@@ -311,74 +418,6 @@ app.get("/:customLogName", function(require,response){
 
       
 });
-
-// old version 
-app.post("/createItem", function(req, res){
-
-    let exrName = req.body.newExr;
-
-    let NumSet = req.body.setNum;
-  
-
-    let NumReps = req.body.repsNum;
-
-    let wght = req.body.weight;
-
-    // create an array of weight to store the weight 
-     let weightDatastring =[];
-     weightDatastring = wght.split(',');
-
-     //var index = scrambleIdRole.indexOf("$");  // Gets the first index where a '$' 
-     //var userID = scrambleIdRole.substr(0, index); // Gets the first part _id
-     //var ROLE = scrambleIdRole.substr(index + 1);  // Gets role 
- 
-    const routineID = req.body.idBTN;
-   
-   
-    // get number of sets and then give them the input space so we can collect the data to then display
-        // create the 'object'
-    const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
-
-
- // find where this 'exercise' == myobj belongs and inset it 
-  
-//Need to see what routine this myObj belongs too 
- Log.find({_id: routineID}, function(err, foundRoutine){
-
-  if(!err){
-        // now need to insert to the logs field
-    foundRoutine.logs.push(myobj); 
-
-    // need to inset into item collections as well 
-    Item.insertMany(myobj);
-
-    var queryString =  encodeURIComponent(foundRoutine[0]._id); 
-
-     res.redirect('/displayRoutine/?routineID='+foundRoutine[0]._id);
-  }
-  else{ console.log(err); }
-
-  });
-// //try{
-//     // insert to items collections as well 
-//       Item.insertMany(myobj); 
-    
-//     // tap in to found logs, tap in to items, push myobj into array of items (items = exercise + sets + reps + weight ) 
-//       foundLogs.logs.push(myobj);
-
-//       foundLogs.save();
-//       var queryString =  encodeURIComponent(routineID); 
-
-//       res.redirect('/displayRoutine/?routineID='+queryString); 
-// //}
-// //catch(err) { console.log( " this is the error: " + err ); }
-//       // render the new item in the routine it belongs too  
-
-//   });
-});
-  
-
-
 
 
 
