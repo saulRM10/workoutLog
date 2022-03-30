@@ -381,8 +381,13 @@ app.post("/delete", function(req, res){
   // routine id 
   const dtRoutine = req.body.deltRotn;
   // item id 
-  const SetOfIds = req.body.delete;
-  console.log(SetOfIds); 
+  let SetOfIds = req.body.delete;
+  //console.log(SetOfIds); 
+  // Need to split to get exercise ID to delete 
+  var index = SetOfIds.indexOf("$");  // Gets the first index where a '$' 
+  var exerciseID = SetOfIds.substr(0, index); // Gets the first part _id
+  var routineID = SetOfIds.substr(index + 1);  // Gets role 
+  // get routine it belonged to to then later redirect 
   if ( dtRoutine != undefined){ // if not undefined then you want to delete a routine 
     Log.deleteOne({_id: dtRoutine}, function(err){
 
@@ -396,12 +401,14 @@ app.post("/delete", function(req, res){
   }
   else {
     // delete item 
-    // Item.deleteOne({_id:noMore}, function(err){
+      Item.deleteOne({_id:exerciseID}, function(err){
   
-    //   if(!err){
-    //     console.log("exercise deleted successfully" );
-    //   }
-    // });
+      if(!err){
+        console.log("exercise deleted successfully" );
+
+        res.redirect('/displayRoutine/?routineID='+routineID); 
+      }
+    });
     
   }
 });
