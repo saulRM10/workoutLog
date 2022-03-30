@@ -36,11 +36,12 @@
         </form>
         <!-- need to make a edit/menu option  -->
         <form action="/delete" method="post">
-            <td><button formaction="/openMenu" type="submit" name = "editBtnRt" value="<%= routine.WkName %>"> edit </button></td> 
+            
+            <td><button formaction="/openMenu" type="submit" name = "editBtnRt" value="<%= routine._id %>"> edit </button></td> 
 
         </form>
     
-                <% if(  OpenEdit == routine.WkName ){ %>
+                <% if(  OpenEdit == routine._id ){ %>
                        
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
         

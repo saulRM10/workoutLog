@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 // import a querystring tool 
 const querystring = require('querystring'); 
 const { Long } = require("mongodb");
+const res = require("express/lib/response");
 const app = express();
 
 // use ejs 
@@ -98,30 +99,22 @@ const Log = mongoose.model("Log", logSchema);
 
     // create a global variable to know what routine we are on;
     let inthisRoutine = " " ; 
-    //console.log(" in this routine at the very start : " + inthisRoutine);
 
-// taken straight from when the new routine is cerated 
-  const GlobalRtLocationATM = "/"; 
-// current routine i want to be at, the routine id 
-//const {_id : routineID } = Log.find({}); 
-//var routineID; 
 // a new var to keep track of the name of the routine, assuming program will now allow duplicates 
 let currentRoutineName ='' ; // start at empty 
 
 // go home and render home page 
 // /goHome
-app.get("/", function(require, response){
+app.get("/", function(req, res){
 
-  inthisRoutine = " ";
-  console.log(" in this routine at /  : " + inthisRoutine);
-
+    const routineID = req.query.routineID; 
     Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
       //console.log(logNamesHere); 
 
       if(!err){
        
-        response.render('home',{  listofNames: logNamesHere, OpenEdit: openRoutineMenu });
+        res.render('home',{  listofNames: logNamesHere, OpenEdit: routineID });
       }
 
     });
@@ -247,6 +240,10 @@ app.get('/displayRoutine', function( req, res){
  
     const RoutineID = req.query.routineID; 
 
+    // need to obtain exercise id
+    const ExerciseID = req.query.exerciseID;
+    //console.log(ExerciseID); 
+     
     Log.find( {_id: RoutineID}, function( err, foundRoutine){
 
      // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
@@ -271,7 +268,7 @@ app.get('/displayRoutine', function( req, res){
             }); //  updateOne() end 
 
           // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
-          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises }); 
+          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , OpenEdit: ExerciseID }); 
           
     }); 
 
@@ -418,6 +415,8 @@ app.post("/update", function(require,response){
 
     // exercise 
     const updateItem = require.body.needsUpdate;
+
+    console.log('item that needs updating: '+ updateItem); 
     
     
     // routine 
@@ -454,7 +453,12 @@ app.post("/update", function(require,response){
         });
 
         
-    response.redirect("/" + inthisRoutine );
+   // response.redirect("/" + inthisRoutine );
+   Item.find({_id: updateItem}, function(err, foundItem){
+      if( !err){
+        res.redirect('/displayRoutine/?routineID='+foundItem[0].routine_id); 
+      }
+   });
 
   } // end of if 
 
@@ -496,26 +500,24 @@ response.redirect("/");
 
 
 
-app.post("/openMenu", function(require, response){
+app.post("/openMenu", function(req, res){
 
+   const exerciseID = req.body.editBtnExr; 
+
+   const routineID = req.body.editBtnRt;
   
-  // open exercise edit menu
-   openExerciseMenu = require.body.editBtnExr;
-
-   
-
-   
-
-   // open routine edit menu 
-   openRoutineMenu = require.body.editBtnRt; 
-
-   console.log(" i am in  : " + inthisRoutine);
-   if ( openExerciseMenu != undefined){
+   if ( exerciseID != undefined){
     
-       response.redirect("/" + inthisRoutine);
+       Item.find({_id:exerciseID}, function(err, foundItem){
+
+          if(!err){
+          res.redirect('/displayRoutine/?routineID='+foundItem[0].routine_id+'&exerciseID='+exerciseID);
+          }
+       })
+      
    }
    else {
-    response.redirect("/");
+      res.redirect("/?routineID="+routineID);
    }
 
 

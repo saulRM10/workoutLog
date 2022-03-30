@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Routine</title>
-</head>
+<!-- </head>
 <body>
 
     <% routine.forEach(function(rt){ %> 
@@ -19,7 +19,106 @@
         <h1> <%=  exercise.sets %></h1>
         <h1> <%=  exercise.reps %></h1>
     
-        <%})%>
+        <%})%> -->
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+<style>
+    table, th, td{
+        /* border: 1px solid black; */
+        text-align: center;
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    table{
+        width: 50%;
+        text-align: center;
+        margin:auto;
+    }
+
+    
+    
+    input{
+        width: 100px;
+        margin: auto;
+        text-align: center;
+    }
+    form{
+        padding-top: 30px;
+        padding-bottom: 40px;
+        margin: auto;
+        text-align: center;
+    }
+</style>
+
+<body>
+
+ 
+    <% routine.forEach(function(rt){ %> 
+        <h1 style="text-align: center;"> <%= rt.WkName %></h1>
+    <%})%>
+
+  
+
+    
+    <table>
+        <tr>
+            <th>Exercises</th>   
+            <th>Sets</th>
+            <th>Reps</th>
+            <th>Weight</th>
+        </tr>
+        <% ListOfExercises.forEach(function(exercise){ %>  
+           
+            <% for(var i = 0; i< exercise.sets; i++){ %>  
+                <tr>
+       
+                    <form action="/delete" method="post">
+                       <% if( i ==0 ){ %>
+                        <td><%= exercise.name %></td>
+                        
+                        <% } %>
+                        <% if( i !=0 ){ %>
+                            <td></td>
+                            <% } %>
+                   
+                    <td> Set <%= i+1 %>: </td>
+                    <td><%= exercise.reps %></td>
+                    <td><%= exercise.weight[i] %></td>
+                    <% if( i ==0 ){ %>
+                    
+                        <!-- I will send back the id of the item instead od name. In order to connect it back to the original routine it comes from exercise.name  -->
+                        <td><button formaction="/openMenu" type="submit" name = "editBtnExr" value="<%= exercise._id %>"> edit </button></td> 
+
+                        <% } %>
+                    
+                        <% if(  OpenEdit == exercise._id ){ %>
+                            <% if( i ==1 ){ %>
+                                <form style="margin: auto; text-align: center;" action="/update" method="post">
+        
+                                   
+                                <h3 style=" text-align: center;"> Edit : <%= exercise.name %> </h3> <br>
+                                    <input type="text" name="updateName" placeholder="<%= exercise.name %>" autocomplete="off">
+                                    <input type="text" name="updateSetNum" placeholder="<%= exercise.sets %>" autocomplete="off">
+                                    <input type="text" name="updateRepNum"  placeholder="<%= exercise.reps %>"autocomplete="off">
+                                    <input type="text" name="updateWeight" placeholder="<%= exercise.weight %>" autocomplete="off">
+                          
+                            <button formaction="/update" type="submit" name = "needsUpdate" value="<%= exercise._id %>"> save</button> 
+                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= exercise._id %>"> delete </button> 
+                            <button  formaction="/close"  type="submit" name = "closeMenuExr" value="item>_id"> cancel </button> </input> 
+                                </form>
+                            <% } %>
+                            <% } %> 
+
+                  </form>
+                  
+                </tr>  
+        
+                <%}%>
+          
+                <%})%>
+
+        </table>
 
 
 
@@ -37,6 +136,14 @@
         <button  type="submit" name="idBTN" value=" <%=rt._id%>">submit</button>
         <%})%>
 
+    </form>
+
+     
+
+    <form action="/" method="get">
+    
+        <button type="submit" name="homeBtn" > home </button>
+        
     </form>
   
 </body>
