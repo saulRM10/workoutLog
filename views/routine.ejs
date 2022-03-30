@@ -91,9 +91,9 @@
                         <td><button formaction="/openMenu" type="submit" name = "editBtnExr" value="<%= exercise._id %>"> edit </button></td> 
 
                         <% } %>
-                    
-                        <% if(  OpenEdit == exercise._id ){ %>
-                            <% if( i ==1 ){ %>
+                     
+                        <% if(  open == exercise._id ){ %>
+                            <% if( i == 0 ){ %>
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
         
                                    
@@ -104,8 +104,12 @@
                                     <input type="text" name="updateWeight" placeholder="<%= exercise.weight %>" autocomplete="off">
                           
                             <button formaction="/update" type="submit" name = "needsUpdate" value="<%= exercise._id %>"> save</button> 
-                            <button  formaction="/delete"  type="submit" name = "skip" value="<%= exercise._id %>"> delete </button> 
-                            <button  formaction="/close"  type="submit" name = "closeMenuExr" value="item>_id"> cancel </button> </input> 
+
+                            <% routine.forEach(function(rt){ %> 
+                            <button  formaction="/delete"  type="submit" name = "delete" value="<%= exercise._id %>$<%= rt._id %>"> delete </button> 
+                            <button  formaction="/close"  type="submit" name = "closeMenuExr" value="<%= rt._id %>"> cancel </button> </input>
+                            <%})%>
+                             
                                 </form>
                             <% } %>
                             <% } %> 

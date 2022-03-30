@@ -241,8 +241,10 @@ app.get('/displayRoutine', function( req, res){
     const RoutineID = req.query.routineID; 
 
     // need to obtain exercise id
-    const ExerciseID = req.query.exerciseID;
-    //console.log(ExerciseID); 
+    let ExerciseID = req.query.exerciseID;
+   
+    
+    console.log(ExerciseID); 
      
     Log.find( {_id: RoutineID}, function( err, foundRoutine){
 
@@ -268,7 +270,7 @@ app.get('/displayRoutine', function( req, res){
             }); //  updateOne() end 
 
           // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
-          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , OpenEdit: ExerciseID }); 
+          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , open: ExerciseID }); 
           
     }); 
 
@@ -373,14 +375,14 @@ app.get("/:customLogName", function(require,response){
 
 
 
-app.post("/delete", function(require, response){
+app.post("/delete", function(req, res){
 
 
   // routine id 
-  const dtRoutine = require.body.deltRotn;
+  const dtRoutine = req.body.deltRotn;
   // item id 
-  const noMore = require.body.skip;
-
+  const SetOfIds = req.body.delete;
+  console.log(SetOfIds); 
   if ( dtRoutine != undefined){ // if not undefined then you want to delete a routine 
     Log.deleteOne({_id: dtRoutine}, function(err){
 
@@ -388,22 +390,19 @@ app.post("/delete", function(require, response){
         console.log("routine deleted successfully");
     }
     // deleted the item, not go back to root and render what we do have left
-    response.redirect("/");
+    res.redirect("/");
     });
 
   }
   else {
     // delete item 
-    Item.deleteOne({_id:noMore}, function(err){
-
-        
-      if(!err){
-        console.log("exercise deleted successfully" );
-      }
-
-      response.redirect("/" + inthisRoutine);
-
-    });
+    // Item.deleteOne({_id:noMore}, function(err){
+  
+    //   if(!err){
+    //     console.log("exercise deleted successfully" );
+    //   }
+    // });
+    
   }
 });
 
@@ -411,24 +410,24 @@ app.post("/delete", function(require, response){
 
 
 // create a route to update item 
-app.post("/update", function(require,response){
+app.post("/update", function(req,res){
 
     // exercise 
-    const updateItem = require.body.needsUpdate;
+    const updateItem = req.body.needsUpdate;
 
     console.log('item that needs updating: '+ updateItem); 
     
     
     // routine 
-    const newRoutineName = require.body.updateRoutineName;
-    const updateRoutine = require.body.updateRoutineID;
+    const newRoutineName = req.body.updateRoutineName;
+    const updateRoutine = req.body.updateRoutineID;
     
     if ( updateItem != undefined){// if updateItem is not undefined then user wants to update an exercise
       
-    let newName = require.body.updateName;
-    let newSetNum = require.body.updateSetNum;
-    let newRepNum = require.body.updateRepNum;
-    let newWeight= require.body.updateWeight;
+    let newName = req.body.updateName;
+    let newSetNum = req.body.updateSetNum;
+    let newRepNum = req.body.updateRepNum;
+    let newWeight= req.body.updateWeight;
 
     let NewWeightDatastring =[];
     NewWeightDatastring = newWeight.split(',');
@@ -503,11 +502,11 @@ response.redirect("/");
 app.post("/openMenu", function(req, res){
 
    const exerciseID = req.body.editBtnExr; 
-
+  
    const routineID = req.body.editBtnRt;
   
    if ( exerciseID != undefined){
-    
+        console.log(' not undefined ')
        Item.find({_id:exerciseID}, function(err, foundItem){
 
           if(!err){
@@ -533,18 +532,17 @@ app.post("/close", function(require,response){
 
   const closeExr = require.body.closeMenuExr; 
 
+
   const closeRt = require.body.closeMenuRt; 
   
   if ( closeExr != undefined){
 
-    openExerciseMenu = null; 
-    response.redirect("/" + inthisRoutine);
+    response.redirect('/displayRoutine/?routineID='+closeExr);
 
   }
 
   else{
-    
-    openRoutineMenu = null ; 
+     
     response.redirect("/");
 
   }
