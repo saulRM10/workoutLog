@@ -10,6 +10,7 @@
 
     <% routine.forEach(function(rt){ %> 
     <h1> <%= rt.WkName %></h1>
+    <h1> <%= rt._id %></h1>
     <%})%>
 
 
@@ -19,6 +20,7 @@
         <h1> <%=  exercise.reps %></h1>
     
         <%})%>
+
 
 
     <form action="/createItem" method="post">
@@ -31,8 +33,9 @@
 
         <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
 
-        <button  type="submit" name="idBTN" value=" <%= RID %>">submit</button>
-
+    <% routine.forEach(function(rt){ %> 
+        <button  type="submit" name="idBTN" value=" <%=rt._id%>">submit</button>
+        <%})%>
 
     </form>
   

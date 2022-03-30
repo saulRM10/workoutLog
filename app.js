@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 // import a querystring tool 
 const querystring = require('querystring'); 
+const { Long } = require("mongodb");
 const app = express();
 
 // use ejs 
@@ -178,7 +179,8 @@ const newRoutine =  {
       // redirect with updated query in url 
       // var queryString =  encodeURIComponent(newRoutine[0]._id); 
 
-        //res.redirect('/displayRoutine/?routineID='+queryString); 
+        //res.redirect('/displayRoutine/?routineID='+queryString);
+         
    
         res.redirect('/displayRoutine/?routineID='+newRoutine[0]._id); 
     }) ; 
@@ -199,73 +201,54 @@ app.post("/createItem", function(req, res){
 
   let wght = req.body.weight;
 
-  const routineID = req.body.idBTN;
+  const LongRoutineID = req.body.idBTN;
+  // routineID is length of 25 => 25 bytes thats why I get typecast error bc find only reads 
+  // 24 bytes _id
+
+  // need to remove the first character 
+  const ProperLengthID = LongRoutineID.substring(1);
+  console.log(ProperLengthID); 
+  console.log('length of proper: '+ ProperLengthID.length); 
+
+ // console.log('btn value length:'+routineID.length); 
   // create an array of weight to store the weight 
    let weightDatastring =[];
    weightDatastring = wght.split(',');
 
   // get number of sets and then give them the input space so we can collect the data to then display
       // create the 'object'
-  const myobj = { routine_id: routineID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+  const myobj = { routine_id: ProperLengthID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
 
 
 // find where this 'exercise' == myobj belongs and inset it 
 
 //Need to see what routine this myObj belongs too 
-Log.find({_id: routineID}, function(err, foundRoutine){
-
+Log.find({_id: ProperLengthID}, function(err, foundRoutine){
+  
 if(!err){
       // now need to insert to the logs field
-  foundRoutine.logs.push(myobj); 
+  foundRoutine[0].logs.push(myobj); 
 
   // need to inset into item collections as well 
   Item.insertMany(myobj);
 
-  //var queryString =  encodeURIComponent(foundRoutine[0]._id); 
+   res.redirect('/displayRoutine/?routineID='+foundRoutine[0]._id); 
 
-   //res.redirect('/displayRoutine/?routineID='+queryString);
-
-   //res.redirect('/displayRoutine/:'+foundRoutine[0]._id);
-   
-   // before we redirect I will check if id is valid id format 
-// res.redirect('/displayRoutine/?routineID='+newRoutine[0]._id); 
-   res.redirect('/displayTEST/?routineID='+routineID.trim());
 }
 else{ console.log(err); }
 
 });
-// //try{
-//     // insert to items collections as well 
-//       Item.insertMany(myobj); 
-  
-//     // tap in to found logs, tap in to items, push myobj into array of items (items = exercise + sets + reps + weight ) 
-//       foundLogs.logs.push(myobj);
 
-//       foundLogs.save();
-//       var queryString =  encodeURIComponent(routineID); 
-
-//       res.redirect('/displayRoutine/?routineID='+queryString); 
-// //}
-// //catch(err) { console.log( " this is the error: " + err ); }
-//       // render the new item in the routine it belongs too  
-
-//   });
 });
 
 
-
-// when a routine is created, instead of creating a new route 
-// send to a route '/displayRoutine' and render and ejs file 
-//app.get("/:customLogName", function(require,response){
-//app.get('/displayRoutine/:routineID', function( req, res){
   //
 app.get('/displayRoutine', function( req, res){
  
     const RoutineID = req.query.routineID; 
-  
-    Log.find( {_id: RoutineID.trim()}, function( err, foundRoutine){
 
-       // console.log('this is found routine : '+foundRoutine); 
+    Log.find( {_id: RoutineID}, function( err, foundRoutine){
+
      // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
      
      //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
@@ -287,7 +270,8 @@ app.get('/displayRoutine', function( req, res){
                   }
             }); //  updateOne() end 
 
-          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
+          // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
+          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises }); 
           
     }); 
 
@@ -297,43 +281,14 @@ app.get('/displayRoutine', function( req, res){
  
 }); 
 
-app.get('/displayTEST', function( req, res){
- 
-  const RoutineID = req.query.routineID; 
+app.post('/displayRoutine', function(req, res){
 
-  Log.find( {_id: mongoose.Types.ObjectId(RoutineID)}, function( err, foundRoutine){
+  const btnRoutineID = req.body.routineIDbtn;
 
-     // console.log('this is found routine : '+foundRoutine); 
-   // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
-   
-   //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
-       Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
-
-        //console.log('found exercises: ' + foundExercises); 
-       
-        //}
-                var updateLogs = {
-                            $set:
-                            {
-                              logs: foundExercises
-                            }
-         };
-     //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
-        Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
-                if( err ){
-                  console.log(err); 
-                }
-          }); //  updateOne() end 
-
-        res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
-        
-  }); 
-
-
-  }); 
-
-
+  res.redirect('/displayRoutine/?routineID='+btnRoutineID); 
 }); 
+
+
 /**
  * 
  * log.find() // need to find a specific log, given the name WkName. Which returns a cursor with the results in 'foundLogs' 

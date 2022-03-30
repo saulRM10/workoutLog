@@ -26,11 +26,14 @@
     <!-- ____________________ -->
     <% listofNames.forEach(function(routine){ %> 
         <h3> <%= routine.WkName %></h3>
-
+<!-- 
         <form action="/<%= routine.WkName %>" method="get">
             <button  type="submit" name="goHere"> open </button>
-        </form>
+        </form> -->
 
+        <form action="/displayRoutine" method="post">
+            <button  type="submit" name="routineIDbtn" value="<%=routine._id%>"> open </button>
+        </form>
         <!-- need to make a edit/menu option  -->
         <form action="/delete" method="post">
             <td><button formaction="/openMenu" type="submit" name = "editBtnRt" value="<%= routine.WkName %>"> edit </button></td> 
