@@ -128,26 +128,7 @@ app.get("/", function(req, res){
 
 
 
-// get user data from the form and use it redirect to /customLogName 
-app.post("/newpage", function(require, response){
 
-    inthisRoutine = ""; 
-   // const pageName= require.body.newpageName;
-   const pageName= require.body.newpageName;
-
-   //GlobalRtLocationATM = pageName;
-
-    console.log(" global  page name is : " + GlobalRtLocationATM);
-    inthisRoutine = pageName; 
-
-
-    console.log(" inthisRoutine = pageName =>  "+ inthisRoutine + " = " + pageName);
-
-  
-        response.redirect("/" + pageName);
-
-   
-});
 
 app.post("/newpageTest", function(req, res){
 
@@ -288,93 +269,6 @@ app.post('/displayRoutine', function(req, res){
 
   res.redirect('/displayRoutine/?routineID='+btnRoutineID); 
 }); 
-
-
-/**
- * 
- * log.find() // need to find a specific log, given the name WkName. Which returns a cursor with the results in 'foundLogs' 
- *  
- * if foundLogs is empty = no routine with the name of WkName exist 
- *        then we must create that routine of name WkName
- *            a routine needs a name, WkName and a list of Exercises 
- *  
- *            to populate the list of exercises, we need to look at the Items collection
- *            but how do I know that the list of exercises belongs to a routine ???
- * 
- *            Assuming we know  specific collection 
- * 
- * 
- * 
- *          items are being deleted from items collection but in logs collection they still exist// not rendered but in the logs collection
- */
-// create new workout log, named whatever you want
-app.get("/:customLogName", function(require,response){
-    
-  
-     customLogName = require.params.customLogName;
-   
-    console.log(" customLogName when created with .params = " + customLogName);
-
-       // customLogName = inthisRoutine; 
-    
-  //  const customLogName = require.params.newpageName;
-  
-
-    // use this variable, to know what log we are in at all times. 
-      inthisRoutine = customLogName;
-     // inthisRoutine = require.body.newpageName;
-      //console.log(" customLogName when set equal too inthisRoutine  = " + inthisRoutine);
-
-      // need to check if a 'log' of the same name already exist
-    if( customLogName != 'favicon.ico'){ // big if for favicon.ico 
-     // Log.findOne({ WkName:customLogName}, function(err , foundLogs){
-      Log.findOne({ WkName:inthisRoutine}, function(err , foundLogs){
-          
-     // If no documents match the specified query, the promise resolves to null
-        if ( foundLogs == null){
-            // need to just create it 
-             //Log.insertMany([{ WkName:customLogName , logs: blanks }],function(err){
-              Log.insertMany([{ WkName:inthisRoutine , logs: blanks }],function(err){
-              
-              //logNames.push(customLogName);
-              logNames.push(inthisRoutine);
-              
-             }); 
-    
-     
-           // response.redirect("/"+ customLogName);
-           response.redirect("/"+ inthisRoutine);
-            // need to give it items, 
-         } 
-
-        // Document match the specified query, the promise is NOT null 
-        if( foundLogs != null ) {
-
-            // find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
-            Item.find({routine_id: foundLogs._id}, function(err, foundItems){ // start of Item.find()
-
-                  
-                      var updateLogs = {
-                                          $set:
-                                          {
-                                            logs: foundItems
-                                          }
-                      };
-                    //Log.updateOne({ WkName:customLogName }, updateLogs , function(err){ // Log.insertMany() start 
-                    Log.updateOne({ WkName:inthisRoutine }, updateLogs , function(err){ // Log.insertMany() start 
-
-                      }); // Log.insertMany() end 
-
-                 response.render('index', { routineName: foundLogs.WkName , workout: foundItems, OpenEdit: openExerciseMenu , routineID: foundLogs._id });
-            });// end of Item.find()
-        }
-        
-      })
-          }// end of 'if' for favicon.ico
-
-      
-});
-
 
 
 app.post("/delete", function(req, res){
