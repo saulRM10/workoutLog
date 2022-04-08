@@ -9,9 +9,9 @@ const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
 // import a querystring tool 
-const querystring = require('querystring'); 
-const { Long } = require("mongodb");
-const res = require("express/lib/response");
+ const querystring = require('querystring'); 
+// const { Long } = require("mongodb");
+// const res = require("express/lib/response");
 const app = express();
 
 // use ejs 
@@ -27,11 +27,6 @@ app.use(bodyParser.json());
 
 let listofExr =[];
 
-// number of sets 
-let sets = 0;
-
-// atempt to fixing typeError, says the id i return from /createItem is a string and can not use it 
-var ObjectId = require('mongodb').ObjectId;
 // lets use a database
 // 1) install mongoose -> npm i mongoose 
 // 2) require mongoose 
@@ -89,8 +84,7 @@ const logSchema ={
 // create a mongoose model based on the second schema 
 const Log = mongoose.model("Log", logSchema);
  
-// adding a text index to be able to have user search up routines 
-Log.createIndexes({'WkName':"text"}); 
+
 
   
   let openExerciseMenu;
@@ -126,11 +120,7 @@ app.get("/", function(req, res){
   });
 
 
-
-
-
-
-app.post("/newpageTest", function(req, res){
+app.post("/NewRoutine", function(req, res){
 
  const pageName= req.body.newpageName;
 
@@ -185,28 +175,20 @@ app.post("/createItem", function(req, res){
   const ProperLengthID = LongRoutineID.substring(1);
   console.log(ProperLengthID); 
   console.log('length of proper: '+ ProperLengthID.length); 
-
- // console.log('btn value length:'+routineID.length); 
-  // create an array of weight to store the weight 
+ 
    let weightDatastring =[];
    weightDatastring = wght.split(',');
 
-  // get number of sets and then give them the input space so we can collect the data to then display
-      // create the 'object'
-  const myobj = { routine_id: ProperLengthID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
+  const NewExercise = { routine_id: ProperLengthID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
 
-
-// find where this 'exercise' == myobj belongs and inset it 
-
-//Need to see what routine this myObj belongs too 
 Log.find({_id: ProperLengthID}, function(err, foundRoutine){
   
 if(!err){
       // now need to insert to the logs field
-  foundRoutine[0].logs.push(myobj); 
+  foundRoutine[0].logs.push(NewExercise); 
 
   // need to inset into item collections as well 
-  Item.insertMany(myobj);
+  Item.insertMany(NewExercise);
 
    res.redirect('/displayRoutine/?routineID='+foundRoutine[0]._id); 
 
@@ -226,8 +208,6 @@ app.get('/displayRoutine', function( req, res){
     // need to obtain exercise id
     let ExerciseID = req.query.exerciseID;
    
-    
-    console.log(ExerciseID); 
      
     Log.find( {_id: RoutineID}, function( err, foundRoutine){
 
@@ -353,8 +333,6 @@ app.post("/update", function(req,res){
        
         });
 
-        
-   // response.redirect("/" + inthisRoutine );
    Item.find({_id: updateItem}, function(err, foundItem){
       if( !err){
         res.redirect('/displayRoutine/?routineID='+foundItem[0].routine_id); 
@@ -407,7 +385,7 @@ app.post("/openMenu", function(req, res){
    const routineID = req.body.editBtnRt;
   
    if ( exerciseID != undefined){
-        console.log(' not undefined ')
+   
        Item.find({_id:exerciseID}, function(err, foundItem){
 
           if(!err){
@@ -449,19 +427,6 @@ app.post("/close", function(require,response){
   }
   
 });
-
-// search 
-app.post('/search', function(req,res){
-    const SearchString = req.body.searchString; 
-    console.log(SearchString); 
-
- const results = Log.find({WkName:{$regex: 'test29'}});
- //.exec(function(err, searchResults){
- // res.render(searchResults); 
- console.log(results);
-//});
-   
-}); 
 
 app.listen(5000,function(){
     console.log("connected to port 5000");
