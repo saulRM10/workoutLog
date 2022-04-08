@@ -92,15 +92,6 @@ const Log = mongoose.model("Log", logSchema);
 
     let logNames =[];
 
-
-    // create a global variable to know what routine we are on;
-    let inthisRoutine = " " ; 
-
-// a new var to keep track of the name of the routine, assuming program will now allow duplicates 
-let currentRoutineName ='' ; // start at empty 
-
-// go home and render home page 
-// /goHome
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
