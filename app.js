@@ -105,7 +105,6 @@ app.post("/createExercise", function(req, res){
 });
 
 
-  //
 app.get('/displayRoutine', function( req, res){
  
     const RoutineID = req.query.routineID; 
