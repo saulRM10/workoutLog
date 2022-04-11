@@ -96,7 +96,7 @@ const Log = mongoose.model("Log", logSchema);
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
-    Routine.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
+    Routine.find({},{ RoutineName:1},{_id: 0},function(err, logNamesHere){
 
       //console.log(logNamesHere); 
 
@@ -132,7 +132,7 @@ app.post("/NewRoutine", function(req, res){
 });
 
 // moving my route on top of hte route that gets the query string aka /displayRoutine 
-app.post("/createItem", function(req, res){
+app.post("/createExercise", function(req, res){
 
   let exrName = req.body.newExr;
 
@@ -149,29 +149,21 @@ app.post("/createItem", function(req, res){
 
   // need to remove the first character 
   const ProperLengthID = LongRoutineID.substring(1);
-  console.log(ProperLengthID); 
-  console.log('length of proper: '+ ProperLengthID.length); 
- 
+
    let weightDatastring =[];
    weightDatastring = wght.split(',');
 
   const NewExercise = { routine_id: ProperLengthID ,name: exrName, sets: NumSet, reps: NumReps , weight: weightDatastring };
 
-Log.find({_id: ProperLengthID}, function(err, foundRoutine){
-  
-if(!err){
-      // now need to insert to the logs field
-  foundRoutine[0].logs.push(NewExercise); 
-
-  // need to inset into item collections as well 
-  Item.insertMany(NewExercise);
-
-   res.redirect('/displayRoutine/?routineID='+foundRoutine[0]._id); 
-
-}
-else{ console.log(err); }
-
-});
+  // insert new exercise 
+  Exercise.insertMany(NewExercise, function(err, insertedExercise){
+      if(!err){
+        res.redirect('/displayRoutine/?routineID='+ProperLengthID);
+      }
+      else{
+        console.log(err); 
+      }
+  }); 
 
 });
 
@@ -182,38 +174,6 @@ app.get('/displayRoutine', function( req, res){
     const RoutineID = req.query.routineID; 
     let ExerciseID = req.query.exerciseID;
    
-     
-    // Log.find( {_id: RoutineID}, function( err, foundRoutine){
-
-    //  // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
-     
-    //  //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
-    //      Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
-
-    //       //console.log('found exercises: ' + foundExercises); 
-         
-    //       //}
-    //               var updateLogs = {
-    //                           $set:
-    //                           {
-    //                             logs: foundExercises
-    //                           }
-    //        };
-    //    //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
-    //       Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
-    //               if( err ){
-    //                 console.log(err); 
-    //               }
-    //         }); //  updateOne() end 
-
-    //       // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
-    //       res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , open: ExerciseID }); 
-          
-    // }); 
-
-
-    // }); 
-
     Routine.find({_id: RoutineID}, function(err, foundRoutine){
       if(!err){
              // find all exercises that belong to this routine 
