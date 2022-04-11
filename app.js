@@ -24,9 +24,6 @@ app.use(bodyParser.json());
 
 //app.use(express.static("public"));// use these static elements (css, imgs etc )
 //app.use(express.static('public')); // not going to use static files atm
-// need an array of items to store the to list items 
-
-let listofExr =[];
 
 // lets use a database
 // 1) install mongoose -> npm i mongoose 
@@ -233,15 +230,7 @@ app.post("/delete", function(req, res){
   var index = SetOfIds.indexOf("$");  // Gets the first index where a '$' 
   var exerciseID = SetOfIds.substr(0, index); // Gets the first part _id
   var routineID = SetOfIds.substr(index + 1);  // Gets routine_id
-    // delete item 
-    //   Item.deleteOne({_id:exerciseID}, function(err){
-  
-    //   if(!err){
-    //     console.log("exercise deleted successfully" );
 
-    //     res.redirect('/displayRoutine/?routineID='+routineID); 
-    //   }
-    // });
     Exercise.deleteOne({_id: exerciseID}, function(err){
       
       if(!err){
@@ -290,15 +279,15 @@ app.post("/update", function(req,res){
       //let userInput = response.body.newItemData; 
 
       // updated the item, not go back to root and render what we do have left
-  Item.updateOne( {_id: updateItem},newValues,function(err, response) {
-
+  Exercise.updateOne({_id: updateItem},newValues,function(err) {
+ 
     if(!err){
-             console.log("item updated in LOG: " + inthisRoutine );
+        console.log("Exercise has been updated"); 
             }
-       
+  
         });
-
-   Item.find({_id: updateItem}, function(err, foundItem){
+  // once exercise is updated lets redirect 
+   Exercise.find({_id: updateItem}, function(err, foundItem){
       if( !err){
         res.redirect('/displayRoutine/?routineID='+foundItem[0].routine_id); 
       }
@@ -316,9 +305,9 @@ app.post("/update", function(req,res){
     var updatedName = {
                           $set:
                               {
-                                WkName: newRoutineName
+                                RoutineName: newRoutineName
                               }};
-    Log.updateOne({ _id : updateRoutine}, updatedName, function(err, response) {
+    Routine.updateOne({ _id : updateRoutine}, updatedName, function(err, response) {
           
           if( !err){
 
