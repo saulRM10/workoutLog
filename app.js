@@ -209,14 +209,21 @@ app.post("/delete", function(req, res){
 
 
   if ( dtRoutine != undefined){ // if not undefined then you want to delete a routine 
-    Log.deleteOne({_id: dtRoutine}, function(err){
+    Routine.deleteOne({_id: dtRoutine}, function(err){
 
       if( !err){
         console.log("routine deleted successfully");
     }
-    // deleted the item, not go back to root and render what we do have left
-    res.redirect("/");
+    
     });
+   // need to delete exercise that belong to that routine 
+   Exercise.deleteMany({routine_id: dtRoutine}, function(err){
+      if(!err){
+        console.log("deleted all exercises that belonged to the routine as well"); 
+      }
+   }); 
+
+    res.redirect("/");
 
   }
   else {
@@ -227,14 +234,24 @@ app.post("/delete", function(req, res){
   var exerciseID = SetOfIds.substr(0, index); // Gets the first part _id
   var routineID = SetOfIds.substr(index + 1);  // Gets routine_id
     // delete item 
-      Item.deleteOne({_id:exerciseID}, function(err){
+    //   Item.deleteOne({_id:exerciseID}, function(err){
   
+    //   if(!err){
+    //     console.log("exercise deleted successfully" );
+
+    //     res.redirect('/displayRoutine/?routineID='+routineID); 
+    //   }
+    // });
+    Exercise.deleteOne({_id: exerciseID}, function(err){
+      
       if(!err){
         console.log("exercise deleted successfully" );
-
         res.redirect('/displayRoutine/?routineID='+routineID); 
       }
-    });
+      else{
+        console.log(err); 
+      }
+    }); 
     
   }
 });
@@ -334,7 +351,7 @@ app.post("/openMenu", function(req, res){
   
    if ( exerciseID != undefined){
    
-       Item.find({_id:exerciseID}, function(err, foundItem){
+       Exercise.find({_id:exerciseID}, function(err, foundItem){
 
           if(!err){
           res.redirect('/displayRoutine/?routineID='+foundItem[0].routine_id+'&exerciseID='+exerciseID);
