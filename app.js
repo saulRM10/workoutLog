@@ -8,14 +8,15 @@ const bodyParser = require("body-parser");
 //const { setServers } = require("dns");
 
 const mongoose = require("mongoose");
-// import a querystring tool 
- const querystring = require('querystring'); 
-// const { Long } = require("mongodb");
-// const res = require("express/lib/response");
+
 const app = express();
 
 // use ejs 
 app.set('view engine', 'ejs');
+
+// import new models 
+const {Routine, Exercise} = require('./models/Routine'); 
+//const Exercise = require('./models/Exercise'); 
 
 // use body parcer 
 app.use(bodyParser.urlencoded({extended:true }));
@@ -95,7 +96,7 @@ const Log = mongoose.model("Log", logSchema);
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
-    Log.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
+    Routine.find({},{ WkName:1},{_id: 0},function(err, logNamesHere){
 
       //console.log(logNamesHere); 
 
@@ -115,34 +116,18 @@ app.post("/NewRoutine", function(req, res){
 
  const pageName= req.body.newpageName;
 
-const newRoutine =  {
-  WkName: pageName, 
-  logs: blanks
-}; 
- // need to insert new routine into Log 
- Log.insertMany(newRoutine, function( err){
-   if( !err){
-     //console.log("new routine created"); 
-     // insert to array that gets all the names of routines created 
-     logNames.push(pageName); 
-   }
-   // before i redirect i want to keep track what routine I need by keeping track of the routine id 
-   
-      // I will attempt pass in the routineID as a query in url 
-    Log.find({WkName: pageName}, function( err, newRoutine){
-      // get the id of the routine 
-     // console.log('routine id: ' + newRoutine[0]._id); 
+    const newRoutine =  {
+      RoutineName: pageName
+    }; 
 
-      // redirect with updated query in url 
-      // var queryString =  encodeURIComponent(newRoutine[0]._id); 
+    Routine.insertMany(newRoutine, function(err, insertedRoutine){
 
-        //res.redirect('/displayRoutine/?routineID='+queryString);
-         
-   
-        res.redirect('/displayRoutine/?routineID='+newRoutine[0]._id); 
-    }) ; 
-
- })
+        if(!err){
+          res.redirect('/displayRoutine/?routineID='+insertedRoutine[0]._id); 
+        }
+        else{ console.log(err) }
+    }) // end of insertMany 
+      
  
 });
 
@@ -195,41 +180,53 @@ else{ console.log(err); }
 app.get('/displayRoutine', function( req, res){
  
     const RoutineID = req.query.routineID; 
-
-    // need to obtain exercise id
     let ExerciseID = req.query.exerciseID;
    
      
-    Log.find( {_id: RoutineID}, function( err, foundRoutine){
+    // Log.find( {_id: RoutineID}, function( err, foundRoutine){
 
-     // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
+    //  // once foundRoutine is returned then we need to find the 'logs' or all the exercises that belong to that routine 
      
-     //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
-         Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
+    //  //find the exercises that match the id of the routine, and store the results in foundItems //routine_id: foundLogs._id
+    //      Item.find({routine_id: foundRoutine[0]._id}, function(err, foundExercises){ // start of Item.find()        
 
-          //console.log('found exercises: ' + foundExercises); 
+    //       //console.log('found exercises: ' + foundExercises); 
          
-          //}
-                  var updateLogs = {
-                              $set:
-                              {
-                                logs: foundExercises
-                              }
-           };
-       //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
-          Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
-                  if( err ){
-                    console.log(err); 
-                  }
-            }); //  updateOne() end 
+    //       //}
+    //               var updateLogs = {
+    //                           $set:
+    //                           {
+    //                             logs: foundExercises
+    //                           }
+    //        };
+    //    //Update the  list of exercises that belong to the routine based off the routine id // Log.insertMany() start 
+    //       Log.updateOne({ _id :foundRoutine[0]._id }, updateLogs , function(err){ // Log.updateOne() start 
+    //               if( err ){
+    //                 console.log(err); 
+    //               }
+    //         }); //  updateOne() end 
 
-          // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
-          res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , open: ExerciseID }); 
+    //       // res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , RID:foundRoutine[0]._id }); 
+    //       res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , open: ExerciseID }); 
           
-    }); 
+    // }); 
 
 
-    }); 
+    // }); 
+
+    Routine.find({_id: RoutineID}, function(err, foundRoutine){
+      if(!err){
+             // find all exercises that belong to this routine 
+        Exercise.find({routine_id: foundRoutine[0]._id}, function(err,foundExercises){
+            if(!err){
+              res.render('routine', { routine: foundRoutine, ListOfExercises : foundExercises , open: ExerciseID });
+            }
+        }); // end of Exercise.find()
+      }
+     
+    }); // end of Routine.find()
+
+      
 
  
 }); 

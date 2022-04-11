@@ -23,11 +23,11 @@ const ExerciseSchema = new mongoose.Schema({
             minlength: [1, 'set must be at least 1 characters.'], 
             maxlength: [2, 'set must be at less than 2 characters.']
           },
-          
+
     weight: Array
 
 }); 
 
-const Exercise = mongoose.model("Exercise", RoutineSchema); 
+const Exercise = mongoose.model("Exercise", ExerciseSchema); 
 
-module.exports = Exercise; 
+//module.exports = Exercise; 
