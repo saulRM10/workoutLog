@@ -32,70 +32,10 @@ app.use(bodyParser.json());
 //mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true , useUnifiedTopology: true});
 mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/ExerciseDB?retryWrites=true&w=majority" , {useNewUrlParser: true , useUnifiedTopology: true}); 
 
-// 4) create a database schema 
-
-const itemsSchema = {
-  // add a routine ID so ik which list of exercises belongs to what routine 
-    routine_id: mongoose.ObjectId,
-    // instead of string   
-    // need to validate the data 
-    name: {
-            type: String, 
-            required: [true, 'name required'], 
-            minlength: [2, 'name must be at least 2 characters.'],
-            maxlength: [20, 'name must be less than 20 characters.']
-          },
-    sets: {
-            type: String,
-            required: [true, 'set number required'],
-            minlength: [1, 'set must be at least 1 characters.'], 
-            maxlength: [2, 'set must be at less than 2 characters.']
-          },
-    reps: {
-            type: String,
-            required: [true, 'set number required'],
-            minlength: [1, 'set must be at least 1 characters.'], 
-            maxlength: [2, 'set must be at less than 2 characters.']
-          },
-    weight: Array
-  };
-  // 5) cerate a mongoose model based on the schema 
-const Item = mongoose.model("Item", itemsSchema);
-
-// when a routine is created it will have zero items
-const blanks = [];
-
-
-  //create a place to store multiple workout log 
-const logSchema ={
-
-  WkName: {
-              type: String, 
-              // required: [true, 'name required'],
-              // minlength: [2, 'name must be at least 2 characters.'],
-              // maxlength: [20, 'name must be less than 20 characters.']
-          }, 
-  // contains an array of 'items' = exercises, sets , reps , weight 
-  logs: [itemsSchema] 
-};
-
-// create a mongoose model based on the second schema 
-const Log = mongoose.model("Log", logSchema);
- 
-
-
-  
-  let openExerciseMenu;
-  let openRoutineMenu; 
-
-    let logNames =[];
-
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
     Routine.find({},{ RoutineName:1},{_id: 0},function(err, logNamesHere){
-
-      //console.log(logNamesHere); 
 
       if(!err){
        
@@ -317,11 +257,6 @@ app.post("/update", function(req,res){
 
       });
 
-    }
-    // name is not long enough , close menu
-    else { 
-
-      openRoutineMenu = null;
     }
 
         res.redirect("/");
