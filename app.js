@@ -424,7 +424,7 @@ app.post('/signup' , function( req, res){
  const request =  https.request(url, options, function(response){
                           if( response.statusCode === 200){
                               const title = "Subscribed!"
-                              const message = "You've been successfully signed up to the newsletter, look forward to awesome content!"
+                              const message = "You've been successfully signed up to the newsletter, look forward to awesome content and updates!"
                               const status = 1 ; // success 
                               res.render('message', { TITLE : title , MSG : message , status:status}); 
                           }
