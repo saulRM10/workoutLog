@@ -26,10 +26,16 @@ app.use(session({
 app.use(passport.initialize()); 
 
 // initialize session with passport 
-app,use(passport.session()); 
+app.use(passport.session()); 
 // import new models 
 const {Routine, Exercise} = require('./models/Routine'); 
-//const Exercise = require('./models/Exercise'); 
+const User = require('./models/Users'); 
+
+passport.use(User.createStrategy()); 
+
+passport.serializeUser(User.serializeUser()); 
+passport.deserializeUser(User.deserializeUser()); 
+
 
 // use body parcer 
 app.use(bodyParser.urlencoded({extended:true }));
