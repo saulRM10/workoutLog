@@ -23,9 +23,13 @@ app.use(passport.initialize());
 
 // initialize session with passport 
 app.use(passport.session()); 
+// import auth middleware 
+const loggedIn = require("./auth"); 
+
 // import new models 
 const {Routine, Exercise} = require('./models/Routine'); 
 const User = require('./models/Users'); 
+const req = require("express/lib/request");
 
 mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/ExerciseDB?retryWrites=true&w=majority" , {useNewUrlParser: true , useUnifiedTopology: true});
 
@@ -43,6 +47,9 @@ app.post('/login', function(req, res){
 
 }); 
 
+app.get('/register', function(req, res){
+  res.render('register'); 
+})
 app.post('/register', function(req, res){
     User.register({username: req.body.username}, req.body.password, function(err, user){
         if(err){
@@ -51,13 +58,16 @@ app.post('/register', function(req, res){
         else{
           passport.authenticate('local')(req,res, function(){
             // if they end up here they successfully been authenticated 
-
+              res.redirect('/private'); 
           })
         }
     })
 }); 
 
+app.get('/private',loggedIn , function(req, res){
 
+  res.send("you have access to this sentence")
+}); 
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
