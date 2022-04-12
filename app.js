@@ -43,6 +43,11 @@ passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({extended:true }));
 app.use(bodyParser.json()); 
 
+
+app.get('/login', function(req, res){
+  res.render('login'); 
+});
+
 app.post('/login', function(req, res){
 
 }); 
