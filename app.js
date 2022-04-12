@@ -49,7 +49,23 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login', function(req, res){
+  
+  const user = new User({
+    username: req.body.username, 
+    password: req.body.password
+  }); 
 
+    req.login(user, function(err){
+      if(err){
+        console.log(err);
+      }
+      else{
+        passport.authenticate('local')(req,res, function(){
+          // if they end up here they successfully been authenticated 
+            res.redirect('/private'); 
+        });
+      }
+    })
 }); 
 
 app.get('/register', function(req, res){
@@ -64,9 +80,15 @@ app.post('/register', function(req, res){
           passport.authenticate('local')(req,res, function(){
             // if they end up here they successfully been authenticated 
               res.redirect('/private'); 
-          })
+          });
         }
     })
+}); 
+
+app.get('/logout', function(req, res){
+  // end user session 
+  req.logout(); 
+  res.redirect('/login'); 
 }); 
 
 app.get('/private',loggedIn , function(req, res){
