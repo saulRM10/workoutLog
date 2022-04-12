@@ -379,7 +379,12 @@ app.post("/close", function(require,response){
   
 });
 
-app.listen(5000,function(){
+let port= process.env.PORT;
+if(port==null || port==""){
+    port= 5000; 
+}
+
+app.listen(port,function(){
     console.log("connected to port 5000");
 });
  
