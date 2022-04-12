@@ -385,6 +385,6 @@ if(port==null || port==""){
 }
 
 app.listen(port,function(){
-    console.log("connected to port 5000");
+    console.log("server started successfully");
 });
  
