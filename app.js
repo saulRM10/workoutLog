@@ -5,15 +5,28 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-//const { setServers } = require("dns");
+const session = require("express-session"); 
+const passport= require("passport"); 
+const passportLocalMongoose = require("passport-local-mongoose"); 
 
 const mongoose = require("mongoose");
 
 const app = express();
-
 // use ejs 
 app.set('view engine', 'ejs');
 
+// initiate session 
+app.use(session({
+    secret:"the Secret", 
+    resave: false ,
+    saveUninitialized: false
+})); 
+
+// initialize passport 
+app.use(passport.initialize()); 
+
+// initialize session with passport 
+app,use(passport.session()); 
 // import new models 
 const {Routine, Exercise} = require('./models/Routine'); 
 //const Exercise = require('./models/Exercise'); 
