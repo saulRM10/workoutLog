@@ -4,8 +4,14 @@ const bodyParser = require("body-parser");
 const session = require("express-session"); 
 const passport= require("passport"); 
 const passportLocalMongoose = require("passport-local-mongoose"); 
-
+//const request = require("request"); 
+const https = require('https'); 
 const mongoose = require("mongoose");
+
+// api key 
+const API_KEY = process.env.API_KEY; 
+// audience id 
+const AUDIENCE_ID = process.env.AUDIENCE_ID;  
 
 const app = express();
 // use ejs 
@@ -379,6 +385,67 @@ app.post("/close", function(require,response){
   
 });
 
+// newsletter 
+app.get('/signup' , function ( req, res){
+  res.render('signup'); 
+});
+
+app.post('/signup' , function( req, res){
+  const first_name = req.body.firstName; 
+  const last_name = req.body.lastName; 
+  const user_email= req.body.email; 
+
+  // data object 
+  const data ={
+      members: [
+          {
+              email_address: user_email,
+              status: "subscribed",
+              merge_fields:{
+                  FNAME: first_name,
+                  LNAME: last_name
+              }
+          }
+      ]
+  }
+  // need to convert to json 
+  const JSONdata = JSON.stringify(data); 
+
+  // url, end point to subscribe new members 
+  const url = `https://us14.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}`; 
+
+  // off the http documentation for nodeJS
+  const options = {
+      method: "POST",
+      auth: `sreyes20:${API_KEY}`
+
+  }
+  // need to make request
+ const request =  https.request(url, options, function(response){
+                          if( response.statusCode === 200){
+                              const title = "Subscribed!"
+                              const message = "You've been successfully signed up to the newsletter, look forward to awesome content!"
+                              const status = 1 ; // success 
+                              res.render('message', { TITLE : title , MSG : message , status:status}); 
+                          }
+                              else{
+                              const title = "OOPS!"
+                              const message = "There was a problem signing you up, please try again"
+                              const status = 0 ; // failure 
+                              res.render('message', { TITLE : title , MSG : message,status:status}); 
+                              }
+                          })
+                      //})
+      
+        request.write(JSONdata);
+        request.end(); 
+
+}); 
+
+// if fail try again 
+app.post('/failure', function(req, res){
+  res.redirect('/signup'); 
+}); 
 let port= process.env.PORT;
 if(port==null || port==""){
     port= 5000; 
