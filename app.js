@@ -39,6 +39,25 @@ passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({extended:true }));
 app.use(bodyParser.json()); 
 
+app.post('/login', function(req, res){
+
+}); 
+
+app.post('/register', function(req, res){
+    User.register({username: req.body.username}, req.body.password, function(err, user){
+        if(err){
+          console.log(err);
+        }
+        else{
+          passport.authenticate('local')(req,res, function(){
+            // if they end up here they successfully been authenticated 
+
+          })
+        }
+    })
+}); 
+
+
 app.get("/", function(req, res){
 
     const routineID = req.query.routineID; 
