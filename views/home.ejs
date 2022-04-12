@@ -8,9 +8,17 @@
   
 </head>
 
-  
+<style>
+    .content {
+    
+      text-align: center;
+    }
+    </style>
+    
 <body>
-    <h1> workout history </h1>
+
+<div class="content">
+    <h1> workout history </h1> 
 
 
 <br>
@@ -22,12 +30,7 @@
         
     </form>
 
-    <form action="/logout" method="get">
-        
-    
-        <button type="submit" name="logout"  value="1" > logout </button>
-        
-    </form>
+  
   
     <% listofNames.forEach(function(routine){ %> 
         <h3> <%= routine.RoutineName %></h3>
@@ -64,7 +67,26 @@
         <% }) %>
    
        
+        <br>
+        <br>
+        <br>
+        <form action="/logout" method="get">
 
+            <button type="submit" name="logout"  value="1" > logout </button>
+            
+        </form>
+
+        <br>
+        <br>
+        <br>
+
+        <form action="/signup" method="get">
+
+            <button type="submit" name="signup" > Newsletter </button>
+            
+        </form>
+
+    </div>
 </body>
 
 </html>

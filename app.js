@@ -386,7 +386,7 @@ app.post("/close", function(require,response){
 });
 
 // newsletter 
-app.get('/signup' , function ( req, res){
+app.get('/signup', loggedIn , function ( req, res){
   res.render('signup'); 
 });
 

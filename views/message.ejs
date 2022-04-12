@@ -18,7 +18,12 @@
           <button type="submit" class="button" style="vertical-align:middle"><span>Try Again </span></button>
         </form>
 
-      <% } %>
-   
+      <% }  else {%>
+        <form action="/" method="get">
+
+          <button type="submit" name="home" > Home </button>
+          
+      </form>
+        <% } %>
 </body>
 </html>
