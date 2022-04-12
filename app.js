@@ -1,7 +1,3 @@
-// template to creating a server in node js 
-// install npm  -> npm install 
-// instal express and body-parser -> npm install express body-parser
-// update server when there is a change -> nodemon nameofFile.js 
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -31,6 +27,8 @@ app.use(passport.session());
 const {Routine, Exercise} = require('./models/Routine'); 
 const User = require('./models/Users'); 
 
+mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/ExerciseDB?retryWrites=true&w=majority" , {useNewUrlParser: true , useUnifiedTopology: true});
+
 passport.use(User.createStrategy()); 
 
 passport.serializeUser(User.serializeUser()); 
@@ -40,16 +38,6 @@ passport.deserializeUser(User.deserializeUser());
 // use body parcer 
 app.use(bodyParser.urlencoded({extended:true }));
 app.use(bodyParser.json()); 
-
-//app.use(express.static("public"));// use these static elements (css, imgs etc )
-//app.use(express.static('public')); // not going to use static files atm
-
-// lets use a database
-// 1) install mongoose -> npm i mongoose 
-// 2) require mongoose 
-// 3) connect to mongo
-//mongoose.connect("mongodb://localhost:27017/ExerciseDB",{useNewUrlParser: true , useUnifiedTopology: true});
-mongoose.connect("mongodb+srv://adminSaul:test123@cluster0.pyekv.mongodb.net/ExerciseDB?retryWrites=true&w=majority" , {useNewUrlParser: true , useUnifiedTopology: true}); 
 
 app.get("/", function(req, res){
 
