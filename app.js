@@ -62,7 +62,7 @@ app.post('/login', function(req, res){
       else{
         passport.authenticate('local')(req,res, function(){
           // if they end up here they successfully been authenticated 
-            res.redirect('/private'); 
+            res.redirect('/'); 
         });
       }
     })
@@ -79,7 +79,7 @@ app.post('/register', function(req, res){
         else{
           passport.authenticate('local')(req,res, function(){
             // if they end up here they successfully been authenticated 
-              res.redirect('/private'); 
+              res.redirect('/'); 
           });
         }
     })
@@ -91,14 +91,11 @@ app.get('/logout', function(req, res){
   res.redirect('/login'); 
 }); 
 
-app.get('/private',loggedIn , function(req, res){
-
-  res.send("you have access to this sentence")
-}); 
-app.get("/", function(req, res){
+app.get("/", loggedIn ,function(req, res){
 
     const routineID = req.query.routineID; 
-    Routine.find({},{ RoutineName:1},{_id: 0},function(err, logNamesHere){
+    const userID = req.user._id; 
+    Routine.find({user_id: userID},{ RoutineName:1},{_id: 0},function(err, logNamesHere){
 
       if(!err){
        
@@ -112,12 +109,14 @@ app.get("/", function(req, res){
   });
 
 
-app.post("/NewRoutine", function(req, res){
+app.post("/NewRoutine", loggedIn ,function(req, res){
 
- const pageName= req.body.newpageName;
+  const pageName= req.body.newpageName;
+  const userID = req.user._id; 
 
     const newRoutine =  {
-      RoutineName: pageName
+      RoutineName: pageName, 
+      user_id: userID
     }; 
 
     Routine.insertMany(newRoutine, function(err, insertedRoutine){
@@ -168,7 +167,7 @@ app.post("/createExercise", function(req, res){
 });
 
 
-app.get('/displayRoutine', function( req, res){
+app.get('/displayRoutine',loggedIn, function( req, res){
  
     const RoutineID = req.query.routineID; 
     let ExerciseID = req.query.exerciseID;

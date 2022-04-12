@@ -39,6 +39,8 @@ const RoutineSchema = new mongoose.Schema({
         // minlength: [2, 'name must be at least 2 characters.'],
         // maxlength: [20, 'name must be less than 20 characters.']
     }, 
+
+    user_id: mongoose.ObjectId,
         
 
 }); 
