@@ -49,6 +49,10 @@
         margin: auto;
         text-align: center;
     }
+
+    .editForm{
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -94,14 +98,15 @@
                      
                         <% if(  open == exercise._id ){ %>
                             <% if( i == 0 ){ %>
-                                <form style="margin: auto; text-align: center;" action="/update" method="post">
+                                <div class="editForm">
+                                <form  action="/update" method="post">
         
                                    
                                 <h3 style=" text-align: center;"> Edit : <%= exercise.name %> </h3> <br>
-                                    <input type="text" name="updateName" placeholder="<%= exercise.name %>" autocomplete="off">
-                                    <input type="text" name="updateSetNum" placeholder="<%= exercise.sets %>" autocomplete="off">
-                                    <input type="text" name="updateRepNum"  placeholder="<%= exercise.reps %>"autocomplete="off">
-                                    <input type="text" name="updateWeight" placeholder="<%= exercise.weight %>" autocomplete="off">
+                                    <input  type="text" name="updateName" placeholder="<%= exercise.name %>" autocomplete="off" >
+                                    <input  type="text" name="updateSetNum" placeholder="<%= exercise.sets %>" autocomplete="off" >
+                                    <input  type="text" name="updateRepNum"  placeholder="<%= exercise.reps %>"autocomplete="off" >
+                                    <input  type="text" name="updateWeight" placeholder="<%= exercise.weight %>" autocomplete="off" >
                           
                             <button formaction="/update" type="submit" name = "needsUpdate" value="<%= exercise._id %>"> save</button> 
 
@@ -111,6 +116,7 @@
                             <%})%>
                              
                                 </form>
+                            </div>
                             <% } %>
                             <% } %> 
 
@@ -128,16 +134,17 @@
 
     <form action="/createExercise" method="post">
     
-        <input type="text " name="newExr" placeholder="New Exercise" autocomplete="off"> 
+        <input type="text " name="newExr" placeholder="New Exercise" autocomplete="off" required> 
 
-        <input type="text " name="setNum" placeholder="set #" autocomplete="off"> 
+        <input type="text " name="setNum" placeholder="set #" autocomplete="off" required> 
 
-        <input type="text " name="repsNum" placeholder="rep #" autocomplete="off"> 
+        <input type="text " name="repsNum" placeholder="rep #" autocomplete="off" required> 
 
-        <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off"> 
+        <input type="text " name="weight" placeholder="weight(lbs)" autocomplete="off" required="message"> 
 
     <% routine.forEach(function(rt){ %> 
         <button  type="submit" name="idBTN" value=" <%=rt._id%>">submit</button>
+        <p> use ',' to indicate septate weights per set</p>
         <%})%>
 
     </form>
