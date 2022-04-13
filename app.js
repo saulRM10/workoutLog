@@ -68,7 +68,7 @@ app.post('/login', function(req, res){
         console.log(err);
       }
       else{
-        passport.authenticate('local')(req,res, function(){
+        passport.authenticate('local', { failureRedirect: '/login', failureMessage: true })(req,res, function(){
           // if they end up here they successfully been authenticated 
             res.redirect('/'); 
         });
