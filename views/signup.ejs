@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/forms.css" type="text/css">
     <title>Sign Up </title>
 
 </head>
@@ -29,4 +30,58 @@
             </form>
 </body> -->
 
-</html>
+<div class="signin">
+    <div class="back-img">
+      <div class="sign-in-text">
+        <h2 class="active">Newsletter</h2>
+    
+      </div><!--/.sign-in-text-->
+      <div class="layer">
+      </div><!--/.layer-->
+      <!-- <p class="point">&#9650;</p> -->
+    </div><!--/.back-img-->
+    <div class="form-section">
+     
+      <form action="/signup" method="POST">
+         <!--First Name -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="sample3">First Name</label>
+          <input class="mdl-textfield__input" type="text" name="firstName" id="sample3" required>
+  
+        </div>
+        <br/>
+        <br/>
+     <!--Last Name -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="sample3">Last Name</label>
+          <input class="mdl-textfield__input"type="text" name="lastName" id="sample3" required>
+        </div>
+        <br/>
+        <br/>
+        <!--Email-->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label class="mdl-textfield__label" for="sample3">Email</label>
+          <input type="email" class="mdl-textfield__input" name="email" id="sample3" required>
+        </div>
+        <br/>
+        <br/>
+      
+        <br/>
+        <br/>
+  
+      
+        <a href="/" role="button" > Workout History </a>
+      </div><!--/.form-section-->
+     
+      <button type="submit" class="sign-in-btn mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--raised mdl-button--colored" >
+           Subscribe ! 
+      </button>
+      <!--/button-->
+   </div><!--/.signin-->
+      </form>
+  
+    
+  </html>
+  
+  
+  <!--  styling credit : https://codepen.io/Strusovsky/pen/GxWPvJ?editors=1000  -->
