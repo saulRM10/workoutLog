@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
     <title>Register</title>
 </head>
 <html>
-  <body>
+  <!-- <body>
     
   
   <h1>Register</h1>
@@ -24,5 +25,65 @@
           </form>
 
   
-</body>
+</body> -->
+
+<div class="signin">
+  <div class="back-img">
+    <div class="sign-in-text">
+      <h2 class="active">Register</h2>
+  
+    </div><!--/.sign-in-text-->
+    <div class="layer">
+    </div><!--/.layer-->
+    <!-- <p class="point">&#9650;</p> -->
+  </div><!--/.back-img-->
+  <div class="form-section">
+   
+    <form action="/register" method="POST">
+       <!--First Name -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="sample3">First Name</label>
+        <input class="mdl-textfield__input" type="text" name="first_name" id="sample3" required>
+
+      </div>
+      <br/>
+      <br/>
+   <!--Last Name -->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="sample3">Last Name</label>
+        <input class="mdl-textfield__input"type="text" name="last_name" id="sample3" required>
+      </div>
+      <br/>
+      <br/>
+      <!--Email-->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="sample3">Email</label>
+        <input type="email" class="mdl-textfield__input" name="username" id="sample3" required>
+      </div>
+      <br/>
+      <br/>
+      <!--Password-->
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="sample3">Password</label>
+        <input class="mdl-textfield__input" type="password" name="password" id="sample3" required>
+
+      </div>
+      <br/>
+      <br/>
+
+      <p style="display:inline" >Have an account ? </p>
+      <a href="/login" role="button" > Log In</a>
+    </div><!--/.form-section-->
+   
+    <button type="submit" class="sign-in-btn mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--raised mdl-button--colored" >
+         Register
+    </button>
+    <!--/button-->
+ </div><!--/.signin-->
+    </form>
+
+  
 </html>
+
+
+<!--  styling credit : https://codepen.io/Strusovsky/pen/GxWPvJ?editors=1000  -->

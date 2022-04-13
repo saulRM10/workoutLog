@@ -88,6 +88,19 @@ app.post('/register', function(req, res){
         else{
           passport.authenticate('local')(req,res, function(){
             // if they end up here they successfully been authenticated 
+
+              // before we redirect need to assign them a role 
+              const first_name= req.body.first_name; 
+              const last_name= req.body.last_name;
+              const updatedUserDetails = {FirstName: first_name, LastName: last_name};
+  
+              // update user's data
+              User.updateOne({_id: req.user._id}, updatedUserDetails , function(err){ // start updateOne()
+                  if(!err){
+                      console.log("user registered ! "); 
+                  }
+  
+              });  // end updateOne()
               res.redirect('/'); 
           });
         }
