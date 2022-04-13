@@ -141,6 +141,7 @@ app.post("/NewRoutine", loggedIn ,function(req, res){
       user_id: userID
     }; 
 
+  
     Routine.insertMany(newRoutine, function(err, insertedRoutine){
 
         if(!err){
