@@ -7,7 +7,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 //const request = require("request"); 
 const https = require('https'); 
 const mongoose = require("mongoose");
-
+const path = require('path'); 
 // api key 
 const API_KEY = process.env.API_KEY; 
 // audience id 
@@ -17,6 +17,8 @@ const app = express();
 // use ejs 
 app.set('view engine', 'ejs');
 
+// serve static files 
+app.use(express.static(__dirname + '/public'));
 // initiate session 
 app.use(session({
     secret:"the Secret", 
