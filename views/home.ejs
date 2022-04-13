@@ -30,26 +30,24 @@
         
     </form>
 
-  
+  <br>
+  <br>
   
     <% listofNames.forEach(function(routine){ %> 
-        <h3> <%= routine.RoutineName %></h3>
-<!-- 
-        <form action="/<%= routine.WkName %>" method="get">
-            <button  type="submit" name="goHere"> open </button>
-        </form> -->
+        <h3 style="display:inline"> <%= routine.RoutineName %></h3>
 
-        <form action="/displayRoutine" method="post">
-            <button  type="submit" name="routineIDbtn" value="<%=routine._id%>"> open </button>
+        <form style="display:inline" action="/displayRoutine" method="post">
+            <button style="display:inline" type="submit" name="routineIDbtn" value="<%=routine._id%>"> open </button>
         </form>
-        <br>
-        <br>
+       
         <!-- need to make a edit/menu option  -->
-        <form action="/delete" method="post">
+        <form style="display:inline"  action="/delete" method="post">
             
             <td><button formaction="/openMenu" type="submit" name = "editBtnRt" value="<%= routine._id %>"> edit </button></td> 
 
         </form>
+        <br>
+        <br>
                 <% if(  OpenEdit == routine._id ){ %>
                        
                                 <form style="margin: auto; text-align: center;" action="/update" method="post">
