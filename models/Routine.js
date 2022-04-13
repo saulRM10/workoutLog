@@ -26,7 +26,10 @@ const ExerciseSchema = new mongoose.Schema({
 
     weight: Array
 
-}); 
+},
+    {timestamps: true }
+
+); 
 
 const Exercise = mongoose.model("Exercise", ExerciseSchema); 
 
@@ -43,7 +46,11 @@ const RoutineSchema = new mongoose.Schema({
     user_id: mongoose.ObjectId,
         
 
-}); 
+},
+
+{timestamps: true }
+
+);  
 
 const Routine = mongoose.model("Routine", RoutineSchema); 
 
